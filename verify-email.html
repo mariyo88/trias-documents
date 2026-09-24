@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Verifikacija email adrese - Optimus</title>
+	<meta name="description" content="Potvrdite vašu email adresu za Optimus nalog.">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="icon" type="image/x-icon" href="favicon.ico">
+	<link rel="manifest" href="site.webmanifest">
+	<link type="text/css" rel="stylesheet" href="css/style.css"/>
+	<link type="text/css" rel="stylesheet" href="css/verify-email.css"/>
+</head>
+<body>
+	<!-- HEADER -->
+	<header>
+
+		<!-- MAIN HEADER -->
+		<div id="header">
+			<div class="container">
+				<div class="row">
+					<!-- LOGO -->
+					<div class="col-md-3">
+						<div class="header-logo">
+							<a href="index.html" class="logo">
+								<img src="./img/logo.svg" alt="Optimus logo">
+							</a>
+						</div>
+					</div>
+					<!-- /LOGO -->
+
+					<!-- SEARCH BAR (placeholder — vidljiv samo na index.html) -->
+					<div class="col-md-6 header-search-placeholder"></div>
+					<!-- /SEARCH BAR -->
+
+					<!-- NAV -->
+					<div class="col-md-3 clearfix">
+						<div class="header-ctn" style="display:flex;align-items:center;justify-content:flex-end;height:100%;gap:20px;">
+							<a href="index.html" style="color:#0A0A0A;font-weight:600;text-decoration:none;font-size:14px;">
+								<i class="fa fa-folder-o"></i> Dokumenti
+							</a>
+							<a href="about.html" style="color:#555;text-decoration:none;font-size:14px;">O nama</a>
+							<a href="contact.html" style="color:#555;text-decoration:none;font-size:14px;">Kontakt</a>
+							<div class="nav-account-wrap" style="position:relative;">
+								<a href="account.html" id="nav-account-link" style="color:#fff;text-decoration:none;font-size:14px;">
+									<i class="fa fa-user-o"></i> <span id="nav-account-label">Moj nalog</span>
+								</a>
+							</div>
+							<!-- Menu Toggle (mobile) -->
+							<div class="menu-toggle">
+								<a href="#"><i class="fa fa-bars"></i><span>Meni</span></a>
+							</div>
+						</div>
+					</div>
+					<!-- /NAV -->
+				</div>
+			</div>
+		</div>
+		<!-- /MAIN HEADER -->
+	</header>
+	<!-- /HEADER -->
+
+	<!-- NAVIGATION -->
+	<nav id="navigation">
+		<!-- container -->
+		<div class="container">
+			<!-- responsive-nav -->
+			<div id="responsive-nav">
+				<!-- NAV -->
+				<!-- Static nav links for search engine crawlers; JS overwrites with full mega-menu at runtime -->
+				<ul class="main-nav nav navbar-nav"></ul>
+				<!-- /NAV -->
+			</div>
+			<!-- /responsive-nav -->
+		</div>
+		<!-- /container -->
+	</nav>
+	<!-- /NAVIGATION -->
+
+	<!-- VERIFY SECTION -->
+	<div class="verify-section">
+		<div class="container">
+
+			<!-- Loading state -->
+			<div class="verify-card" id="state-loading">
+				<div class="spinner"></div>
+				<h2>Verifikacija u toku...</h2>
+				<p>Molimo sačekajte dok potvrđujemo vašu email adresu.</p>
+			</div>
+
+			<!-- Success state -->
+			<div class="verify-card" id="state-success" style="display:none;">
+				<i class="fa fa-check-circle verify-icon success"></i>
+				<h2>Email adresa potvrđena!</h2>
+				<p>Vaša email adresa je uspešno verifikovana. Sada se možete prijaviti na vaš nalog.</p>
+				<a href="login.html" class="verify-btn">Prijavi se</a>
+			</div>
+
+			<!-- Error state -->
+			<div class="verify-card" id="state-error" style="display:none;">
+				<i class="fa fa-times-circle verify-icon error"></i>
+				<h2>Verifikacija nije uspela</h2>
+				<p id="error-message">Link za verifikaciju je nevažeći ili je istekao.</p>
+				<a href="register.html" class="verify-btn">Registruj se ponovo</a>
+				<a href="#" class="verify-btn secondary" id="resend-btn">Pošalji ponovo</a>
+			</div>
+
+		</div>
+	</div>
+	<!-- /VERIFY SECTION -->
+
+	<!-- FOOTER -->
+	<footer id="footer">
+	<!-- top footer -->
+	<div class="section">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4 col-xs-6">
+					<div class="footer">
+						<h3 class="footer-title">Optimus</h3>
+						<p>Sigurna platforma za čuvanje i upravljanje vašim dokumentima.</p>
+					</div>
+				</div>
+
+				<div class="col-md-4 col-xs-6">
+					<div class="footer">
+						<h3 class="footer-title">Navigacija</h3>
+						<ul class="footer-links">
+							<li><a href="index.html">Dokumenti</a></li>
+							<li><a href="about.html">O nama</a></li>
+							<li><a href="contact.html">Kontakt</a></li>
+							<li><a href="help.html">Pomoć</a></li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="col-md-4 col-xs-6">
+					<div class="footer">
+						<h3 class="footer-title">Nalog</h3>
+						<ul class="footer-links">
+							<li><a href="login.html">Prijava</a></li>
+							<li><a href="register.html">Registracija</a></li>
+							<li><a href="account.html">Moj nalog</a></li>
+							<li><a href="privacy-policy.html">Politika privatnosti</a></li>
+							<li><a href="terms-and-conditions.html">Uslovi korišćenja</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /top footer -->
+
+	<!-- bottom footer -->
+	<div id="bottom-footer" class="section">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<span class="copyright">© 2026 Optimus. Sva prava zadržana.</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /bottom footer -->
+</footer>
+	<!-- /FOOTER -->
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/config.js"></script>
+	<script src="js/auth.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/main-nav.js"></script>
+	<script src="js/verify-email.js"></script>
+
+</body>
+</html>

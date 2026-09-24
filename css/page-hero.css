@@ -1,0 +1,102 @@
+/* ── Page Hero Banner (shared across pages) ── */
+.page-hero {
+    background: linear-gradient(135deg, #0A0A0A 0%, #1a1b2e 60%, #C8102E 100%);
+    color: #fff;
+    padding: 0 0 50px;
+    position: relative;
+    overflow: hidden;
+}
+.page-hero > .container {
+    padding-top: 10px;
+}
+.page-hero-nav {
+    margin-bottom: 0;
+    padding: 0;
+    background: transparent !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+.page-hero-nav #responsive-nav .main-nav > li > a {
+    color: rgba(255,255,255,0.75);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 16px;
+    transition: color 0.2s;
+}
+.page-hero-nav #responsive-nav .main-nav > li > a:hover,
+.page-hero-nav #responsive-nav .main-nav > li.active > a {
+    color: #fff;
+    background: rgba(255,255,255,0.08);
+    border-radius: 4px;
+}
+.page-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: rgba(66,116,217,0.08);
+    border-radius: 50%;
+}
+.page-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -5%;
+    width: 350px;
+    height: 350px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 50%;
+}
+.page-hero h1 {
+    font-size: 38px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #fff;
+}
+.page-hero h1 span { color: #C8102E; }
+.page-hero p {
+    font-size: 17px;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 0;
+    max-width: 520px;
+}
+.page-hero-badge {
+    display: inline-block;
+    background: rgba(66,116,217,0.2);
+    border: 1px solid rgba(66,116,217,0.5);
+    color: #95CCDD;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+}
+
+/* ── Cart empty state in dropdown ── */
+.cart-empty-state {
+    padding: 50px 20px;
+    text-align: center;
+}
+.cart-empty-state .cart-empty-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 20px;
+    background: #F4F4F4;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cart-empty-state .cart-empty-icon i {
+    font-size: 32px;
+    color: #ccc;
+}
+.cart-empty-state p {
+    color: #999;
+    font-size: 14px;
+    margin: 0;
+}

@@ -1,0 +1,256 @@
+/* ── Under Construction Page ── */
+.wip-hero {
+	background: linear-gradient(135deg, #0A0A0A 0%, #1a1b2e 60%, #C8102E 100%);
+	color: #fff;
+	min-height: 480px;
+	display: flex;
+	align-items: center;
+	position: relative;
+	overflow: hidden;
+	padding: 60px 0;
+}
+.wip-hero::before {
+	content: '';
+	position: absolute;
+	top: -40%;
+	right: -8%;
+	width: 480px;
+	height: 480px;
+	background: rgba(66,116,217,0.08);
+	border-radius: 50%;
+	pointer-events: none;
+}
+.wip-hero::after {
+	content: '';
+	position: absolute;
+	bottom: -30%;
+	left: -5%;
+	width: 340px;
+	height: 340px;
+	background: rgba(255,255,255,0.03);
+	border-radius: 50%;
+	pointer-events: none;
+}
+.wip-hero .container {
+	position: relative;
+	z-index: 1;
+}
+
+.wip-icon-wrap {
+	width: 110px;
+	height: 110px;
+	background: rgba(66,116,217,0.15);
+	border: 2px solid rgba(66,116,217,0.4);
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto 30px;
+	animation: wip-pulse 2.5s ease-in-out infinite;
+}
+.wip-icon-wrap i {
+	font-size: 46px;
+	color: #95CCDD;
+}
+@keyframes wip-pulse {
+	0%, 100% { transform: scale(1);   box-shadow: 0 0 0 0   rgba(66,116,217,0.3); }
+	50%       { transform: scale(1.04); box-shadow: 0 0 0 14px rgba(66,116,217,0);   }
+}
+
+.wip-badge {
+	display: inline-block;
+	background: rgba(66,116,217,0.2);
+	border: 1px solid rgba(66,116,217,0.5);
+	color: #95CCDD;
+	padding: 6px 18px;
+	border-radius: 20px;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 1.5px;
+	text-transform: uppercase;
+	margin-bottom: 22px;
+}
+
+.wip-hero h1 {
+	font-size: 40px;
+	font-weight: 700;
+	color: #fff;
+	margin-bottom: 16px;
+}
+.wip-hero h1 span {
+	color: #C8102E;
+}
+.wip-hero p.wip-lead {
+	font-size: 17px;
+	color: rgba(255,255,255,0.75);
+	max-width: 520px;
+	margin: 0 auto 30px;
+	line-height: 1.7;
+}
+
+/* Progress bar */
+.wip-progress-wrap {
+	max-width: 400px;
+	margin: 0 auto 30px;
+}
+.wip-progress-label {
+	display: flex;
+	justify-content: space-between;
+	font-size: 12px;
+	color: rgba(255,255,255,0.55);
+	margin-bottom: 8px;
+	font-weight: 600;
+	letter-spacing: 0.5px;
+}
+.wip-progress {
+	height: 6px;
+	background: rgba(255,255,255,0.12);
+	border-radius: 3px;
+	overflow: hidden;
+}
+.wip-progress-bar {
+	height: 100%;
+	background: linear-gradient(90deg, #C8102E, #95CCDD);
+	border-radius: 3px;
+	width: 0;
+	transition: width 1.2s ease;
+}
+
+.wip-actions {
+	margin-top: 10px;
+}
+.btn-wip-primary {
+	display: inline-block;
+	background: #C8102E;
+	color: #fff;
+	padding: 13px 32px;
+	border-radius: 3px;
+	font-size: 14px;
+	font-weight: 700;
+	text-decoration: none;
+	margin: 0 6px 10px;
+	transition: background 0.25s ease, transform 0.2s ease;
+}
+.btn-wip-primary:hover {
+	background: #0A0A0A;
+	color: #fff;
+	text-decoration: none;
+	transform: translateY(-2px);
+}
+.btn-wip-outline {
+	display: inline-block;
+	background: transparent;
+	color: #fff;
+	border: 2px solid rgba(255,255,255,0.5);
+	padding: 11px 32px;
+	border-radius: 3px;
+	font-size: 14px;
+	font-weight: 700;
+	text-decoration: none;
+	margin: 0 6px 10px;
+	transition: all 0.25s ease;
+}
+.btn-wip-outline:hover {
+	background: #fff;
+	color: #C8102E;
+	border-color: #fff;
+	text-decoration: none;
+}
+
+/* Info cards below the hero */
+.wip-info-section {
+	padding: 55px 0 40px;
+	background: #F4F4F4;
+}
+.wip-card {
+	background: #fff;
+	border-radius: 6px;
+	box-shadow: 0 2px 15px rgba(0,0,0,0.07);
+	padding: 35px 28px;
+	text-align: center;
+	margin-bottom: 30px;
+	transition: box-shadow 0.3s ease, transform 0.3s ease;
+	border-top: 3px solid transparent;
+}
+.wip-card:hover {
+	box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+	transform: translateY(-5px);
+	border-top-color: #C8102E;
+}
+.wip-card-icon {
+	width: 66px;
+	height: 66px;
+	background: rgba(66,116,217,0.08);
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto 18px;
+	transition: background 0.3s ease;
+}
+.wip-card:hover .wip-card-icon {
+	background: #C8102E;
+}
+.wip-card-icon i {
+	font-size: 26px;
+	color: #C8102E;
+	transition: color 0.3s ease;
+}
+.wip-card:hover .wip-card-icon i {
+	color: #fff;
+}
+.wip-card h4 {
+	font-size: 16px;
+	font-weight: 700;
+	color: #0A0A0A;
+	margin-bottom: 10px;
+}
+.wip-card p {
+	font-size: 14px;
+	color: #777;
+	margin: 0;
+	line-height: 1.7;
+}
+
+/* Contact strip */
+.wip-contact-strip {
+	background: #0A0A0A;
+	padding: 40px 0;
+	text-align: center;
+	color: #fff;
+}
+.wip-contact-strip h3 {
+	font-size: 20px;
+	font-weight: 700;
+	color: #fff;
+	margin-bottom: 8px;
+}
+.wip-contact-strip p {
+	color: rgba(255,255,255,0.65);
+	font-size: 14px;
+	margin-bottom: 20px;
+}
+.wip-contact-link {
+	display: inline-block;
+	color: #95CCDD;
+	font-size: 15px;
+	font-weight: 600;
+	text-decoration: none;
+	margin: 0 16px;
+	transition: color 0.2s ease;
+}
+.wip-contact-link i {
+	margin-right: 7px;
+}
+.wip-contact-link:hover {
+	color: #fff;
+	text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+	.wip-hero h1 { font-size: 28px; }
+	.wip-hero p.wip-lead { font-size: 15px; }
+	.wip-icon-wrap { width: 82px; height: 82px; }
+	.wip-icon-wrap i { font-size: 34px; }
+}

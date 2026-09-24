@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>500 - Greška na serveru | FirstCode</title>
+    <meta name="description" content="Došlo je do greške na serveru. Molimo vas pokušajte ponovo za nekoliko trenutaka ili nas kontaktirajte na +381 (0)63 8558708.">
+    
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+    
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #0A0A0A 0%, #0A0A0A 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        .error-container {
+            text-align: center;
+            padding: 20px;
+            max-width: 700px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Animated Background Elements */
+        .bg-decoration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .bg-decoration::before,
+        .bg-decoration::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(66, 116, 217, 0.08);
+            animation: float 10s infinite ease-in-out;
+        }
+        
+        .bg-decoration::before {
+            width: 350px;
+            height: 350px;
+            top: -175px;
+            left: -175px;
+            animation-delay: 1s;
+        }
+        
+        .bg-decoration::after {
+            width: 450px;
+            height: 450px;
+            bottom: -225px;
+            right: -225px;
+            animation-delay: 3s;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg) scale(1);
+                opacity: 0.08;
+            }
+            50% {
+                transform: translateY(-40px) rotate(180deg) scale(1.15);
+                opacity: 0.12;
+            }
+        }
+        
+        /* Error Number */
+        .error-number {
+            font-size: 180px;
+            font-weight: 700;
+            color: #C8102E;
+            line-height: 1;
+            margin-bottom: 20px;
+            text-shadow: 0 10px 40px rgba(66, 116, 217, 0.3);
+            animation: shake 4s infinite;
+            position: relative;
+        }
+        
+        @keyframes shake {
+            0%, 90%, 100% {
+                transform: translate(0);
+            }
+            91% {
+                transform: translate(-3px, 0);
+            }
+            92% {
+                transform: translate(3px, 0);
+            }
+            93% {
+                transform: translate(-3px, 0);
+            }
+            94% {
+                transform: translate(3px, 0);
+            }
+            95% {
+                transform: translate(0);
+            }
+        }
+        
+        /* Icon */
+        .error-icon {
+            background: rgba(255, 255, 255, 0.95);
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: rotate 3s infinite linear;
+        }
+        
+        .error-icon i {
+            font-size: 60px;
+            color: #C8102E;
+        }
+        
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* Content Card */
+        .error-content {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .error-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #0A0A0A;
+            margin-bottom: 15px;
+        }
+        
+        .error-message {
+            font-size: 16px;
+            color: #777777;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .error-details {
+            background: #F4F4F4;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 4px solid #C8102E;
+        }
+        
+        .error-details p {
+            font-size: 14px;
+            color: #6C757D;
+            margin: 0;
+            line-height: 1.6;
+        }
+        
+        .error-details strong {
+            color: #0A0A0A;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        /* Buttons */
+        .error-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 32px;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .btn-primary {
+            background-color: #C8102E;
+            color: #FFF;
+            box-shadow: 0 10px 30px rgba(66, 116, 217, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background-color: #0A0A0A;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(66, 116, 217, 0.4);
+        }
+        
+        .btn-secondary {
+            background-color: #0A0A0A;
+            color: #FFF;
+            box-shadow: 0 10px 30px rgba(43, 45, 66, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #0A0A0A;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(43, 45, 66, 0.4);
+        }
+        
+        .btn i {
+            font-size: 16px;
+        }
+        
+        /* Support Info */
+        .support-info {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid #E0E0E0;
+        }
+        
+        .support-info p {
+            font-size: 13px;
+            color: #777777;
+            margin-bottom: 10px;
+        }
+        
+        .support-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .support-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #0A0A0A;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .support-links a:hover {
+            color: #C8102E;
+        }
+        
+        .support-links i {
+            font-size: 14px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .error-number {
+                font-size: 120px;
+            }
+            
+            .error-content {
+                padding: 40px 25px;
+            }
+            
+            .error-title {
+                font-size: 24px;
+            }
+            
+            .error-message {
+                font-size: 14px;
+            }
+            
+            .error-icon {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .error-icon i {
+                font-size: 50px;
+            }
+            
+            .error-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .support-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .error-number {
+                font-size: 90px;
+            }
+            
+            .error-content {
+                padding: 30px 20px;
+            }
+            
+            .error-title {
+                font-size: 20px;
+            }
+            
+            .error-details {
+                padding: 15px;
+            }
+            
+            .error-details p {
+                font-size: 13px;
+            }
+            
+            .error-icon {
+                width: 80px;
+                height: 80px;
+                margin-bottom: 20px;
+            }
+            
+            .error-icon i {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Decoration -->
+    <div class="bg-decoration"></div>
+    
+    <!-- Error Container -->
+    <div class="error-container">
+        <div class="error-number" role="status" aria-label="Greška 500">500</div>
+        
+        <div class="error-content">
+            <div class="error-icon" aria-hidden="true">
+                <i class="fa fa-cog"></i>
+            </div>
+            
+            <h1 class="error-title">Greška na serveru</h1>
+            
+            <p class="error-message">
+                Nešto nije u redu sa naše strane. Naš tim programera već radi na rešavanju problema.
+            </p>
+            
+            <div class="error-details">
+                <strong>Šta se desilo?</strong>
+                <p>
+                    Došlo je do neočekivane greške prilikom obrade vašeg zahteva. 
+                    Problem nije na vašoj strani - naši serveri trenutno imaju tehničkih poteškoća.
+                </p>
+            </div>
+            
+            <div class="error-actions">
+                <a href="index.html" class="btn btn-primary">
+                    <i class="fa fa-home"></i>
+                    Nazad na početnu
+                </a>
+                <button onclick="location.reload()" class="btn btn-secondary">
+                    <i class="fa fa-refresh"></i>
+                    Osveži stranicu
+                </button>
+            </div>
+            
+            <div class="support-info">
+                <p>Ako problem i dalje postoji, kontaktirajte nas:</p>
+                <div class="support-links">
+                    <a href="tel:+381638558708">
+                        <i class="fa fa-phone"></i>
+                        +381 (0)63 8558708
+                    </a>
+                    <a href="mailto:prodaja@firstcode.in.rs">
+                        <i class="fa fa-envelope"></i>
+                        prodaja@firstcode.in.rs
+                    </a>
+                    <a href="contact.html">
+                        <i class="fa fa-comment"></i>
+                        Kontakt forma
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Log error for debugging (if needed)
+        console.error('500 Internal Server Error - Page loaded at:', new Date().toISOString());
+        
+        // Optional: Send error report to analytics
+        // You can integrate with your analytics platform here
+    </script>
+</body>
+</html>
