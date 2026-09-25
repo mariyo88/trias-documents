@@ -11,8 +11,14 @@
  *   GET    /api/documents?rootOnly=true          — root docs
  *   GET    /api/documents                        — all docs
  *   PATCH  /api/documents/{id}/move              — move to folder
+ *   DELETE /api/documents/{id}                   — delete document (ADMIN)
  *   GET    /api/documents/{id}/preview           — preview
  *   GET    /api/documents/{id}/download          — download
+ *
+ * Role-based UI (the backend enforces the same rules):
+ *   VIEWER   — preview / download only
+ *   CUSTOMER — + upload, move, create / rename folders
+ *   ADMIN    — + delete documents and folders
  *
  * Depends on: jQuery, AuthService, APP_CONFIG
  */
@@ -44,8 +50,14 @@
         totalPages:      0,
         currentFolderId: null,   // null = all, 'root' = root only, number = folder id
         folderTree:      [],
+        collapsedFolders: {},   // folderId -> true when the user closed the node
         selectedFile:    null,
         searchQuery:     ''      // active search term
+    };
+
+    var perms = {
+        write:  false,
+        delete: false
     };
 
     // ── Init ───────────────────────────────────────────────────────────────
@@ -53,19 +65,35 @@
     $(document).ready(function () {
         if (!AuthService.requireAuth()) return;
 
+        AuthService.refreshUser()
+            .catch(function () { /* fall back to the stored role */ })
+            .then(init);
+    });
+
+    function init() {
+        perms.write  = AuthService.canWrite();
+        perms.delete = AuthService.canDelete();
+        applyPermissions();
+
         bindModalClose();
-        bindUploadZone();
-        bindUploadSubmit();
         bindPreviewModal();
-        bindNewFolderModal();
-        bindRenameFolderModal();
-        bindDeleteFolderModal();
-        bindMoveDocModal();
         bindFilterClear();
 
-        $('#new-root-folder-btn').on('click', function () {
-            openNewFolderModal(null);
-        });
+        if (perms.write) {
+            bindUploadZone();
+            bindUploadSubmit();
+            bindNewFolderModal();
+            bindRenameFolderModal();
+            bindMoveDocModal();
+
+            $('#new-root-folder-btn').on('click', function () {
+                openNewFolderModal(null);
+            });
+        }
+        if (perms.delete) {
+            bindDeleteFolderModal();
+            bindDeleteDocModal();
+        }
 
         // ── Header search form ───────────────────────────────────────────
         $('#doc-search-form').on('submit', function (e) {
@@ -94,7 +122,14 @@
         loadFolderTree().then(function () {
             loadDocuments(0);
         });
-    });
+    }
+
+    function applyPermissions() {
+        $('[data-requires="write"]').toggleClass('hidden', !perms.write);
+        if (!perms.write) {
+            $('#documents-page-subtitle').text('Pregledajte i preuzmite dokumente.');
+        }
+    }
 
     // ══════════════════════════════════════════════════════════════════════
     // MODAL HELPERS
@@ -190,13 +225,27 @@
             loadDocuments(0);
         });
 
-        // Collapse toggle
+        // Collapse toggle — folders start open
         $tree.on('click.toggle', '.doc-tree-toggle', function (e) {
             e.stopPropagation();
             var $btn      = $(this);
-            var $children = $btn.closest('li').find('> .doc-tree-children').first();
-            $btn.toggleClass('open');
-            $children.toggleClass('open');
+            var $li       = $btn.closest('li');
+            var $row      = $li.find('> .doc-tree-row').first();
+            var $children = $li.find('> .doc-tree-children').first();
+            var $icon     = $row.find('> .doc-tree-icon').first();
+            var fid       = parseInt($row.data('folder-id'), 10);
+            var willOpen  = !$btn.hasClass('open');
+
+            $btn.toggleClass('open', willOpen);
+            $children.toggleClass('open', willOpen);
+            $li.toggleClass('is-open', willOpen);
+            $row.attr('aria-expanded', willOpen ? 'true' : 'false');
+            $icon.toggleClass('fa-folder-open', willOpen).toggleClass('fa-folder', !willOpen);
+
+            if (!isNaN(fid)) {
+                if (willOpen) delete state.collapsedFolders[fid];
+                else state.collapsedFolders[fid] = true;
+            }
         });
 
         // Folder action buttons
@@ -206,9 +255,9 @@
             var fid    = parseInt($(this).data('id'), 10);
             var name   = $(this).data('name');
 
-            if (action === 'new-sub')  openNewFolderModal(fid);
-            if (action === 'rename')   openRenameFolderModal(fid, name);
-            if (action === 'delete')   openDeleteFolderModal(fid, name);
+            if (action === 'new-sub' && perms.write)  openNewFolderModal(fid);
+            if (action === 'rename'  && perms.write)  openRenameFolderModal(fid, name);
+            if (action === 'delete'  && perms.delete) openDeleteFolderModal(fid, name);
         });
     }
 
@@ -225,33 +274,40 @@
     function buildFolderNode(node, depth) {
         var hasChildren = node.children && node.children.length > 0;
         var isActive    = state.currentFolderId === node.id;
-        var indent      = depth > 0 ? 'padding-left:' + (depth * 14) + 'px;' : '';
+        var isOpen      = hasChildren && !state.collapsedFolders[node.id];
 
-        var html = '<li>';
-        html += '<div class="doc-tree-row' + (isActive ? ' active' : '') + '" data-folder-id="' + node.id + '" style="' + indent + '">';
+        var html = '<li class="doc-tree-node' + (hasChildren ? ' has-children' : '') + (isOpen ? ' is-open' : '') + '">';
+        html += '<div class="doc-tree-row' + (isActive ? ' active' : '') + '" data-folder-id="' + node.id + '" role="treeitem"' +
+            (hasChildren ? ' aria-expanded="' + (isOpen ? 'true' : 'false') + '"' : '') + '>';
 
         // Collapse toggle or spacer
         if (hasChildren) {
-            html += '<button class="doc-tree-toggle" title="Razvij/skupi"><i class="fa fa-caret-right"></i></button>';
+            html += '<button type="button" class="doc-tree-toggle' + (isOpen ? ' open' : '') + '" title="Razvij/skupi" aria-label="Razvij ili skupi podfoldere"><i class="fa fa-caret-right"></i></button>';
         } else {
-            html += '<span class="doc-tree-toggle-spacer"></span>';
+            html += '<span class="doc-tree-toggle-spacer" aria-hidden="true"></span>';
         }
 
-        html += '<i class="fa fa-folder doc-tree-icon"></i>';
+        html += '<i class="fa fa-folder' + (isOpen ? '-open' : '') + ' doc-tree-icon" aria-hidden="true"></i>';
         html += '<span class="doc-tree-label">' + escHtml(node.name) + '</span>';
 
-        // Action buttons (visible on hover via CSS)
-        html += '<div class="doc-tree-actions">';
-        html += '<button class="doc-tree-action-btn" data-action="new-sub" data-id="' + node.id + '" data-name="' + escAttr(node.name) + '" title="Novi podfoleder"><i class="fa fa-folder-o"></i></button>';
-        html += '<button class="doc-tree-action-btn" data-action="rename"  data-id="' + node.id + '" data-name="' + escAttr(node.name) + '" title="Preimenuj"><i class="fa fa-pencil"></i></button>';
-        html += '<button class="doc-tree-action-btn danger" data-action="delete" data-id="' + node.id + '" data-name="' + escAttr(node.name) + '" title="Obriši"><i class="fa fa-trash"></i></button>';
-        html += '</div>';
+        // Action buttons (visible on hover via CSS; always on touch)
+        if (perms.write || perms.delete) {
+            html += '<div class="doc-tree-actions">';
+            if (perms.write) {
+                html += '<button type="button" class="doc-tree-action-btn" data-action="new-sub" data-id="' + node.id + '" data-name="' + escAttr(node.name) + '" title="Novi podfolder"><i class="fa fa-folder-o"></i></button>';
+                html += '<button type="button" class="doc-tree-action-btn" data-action="rename"  data-id="' + node.id + '" data-name="' + escAttr(node.name) + '" title="Preimenuj"><i class="fa fa-pencil"></i></button>';
+            }
+            if (perms.delete) {
+                html += '<button type="button" class="doc-tree-action-btn danger" data-action="delete" data-id="' + node.id + '" data-name="' + escAttr(node.name) + '" title="Obriši"><i class="fa fa-trash"></i></button>';
+            }
+            html += '</div>';
+        }
 
         html += '</div>'; // .doc-tree-row
 
-        // Children
+        // Children are visible until the user collapses the folder
         if (hasChildren) {
-            html += '<ul class="doc-tree-children">';
+            html += '<ul class="doc-tree-children' + (isOpen ? ' open' : '') + '" role="group">';
             node.children.forEach(function (child) {
                 html += buildFolderNode(child, depth + 1);
             });
@@ -335,6 +391,7 @@
             }).then(function () {
                 closeModal('modal-new-folder');
                 $input.val('');
+                if (parentId != null) delete state.collapsedFolders[parentId];
                 return loadFolderTree();
             }).catch(function (err) {
                 showUploadAlert(err.message || 'Greška pri kreiranju foldera.', 'error');
@@ -474,6 +531,41 @@
         $('#move-doc-confirm-btn').data('doc-id', docId);
         $('#move-doc-name-label').text('"' + docName + '"');
         openModal('modal-move-doc');
+    }
+
+    // ══════════════════════════════════════════════════════════════════════
+    // DELETE DOCUMENT MODAL (ADMIN)
+    // ══════════════════════════════════════════════════════════════════════
+
+    function bindDeleteDocModal() {
+        $('#delete-doc-confirm-btn').on('click', function () {
+            var $btn  = $(this);
+            var docId = $btn.data('doc-id');
+
+            $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Brisanje...');
+
+            AuthService.authFetch('/api/documents/' + docId, { method: 'DELETE' })
+                .then(function () {
+                    closeModal('modal-delete-doc');
+                    // Step back a page if we just removed the last item on it
+                    var onlyRowLeft = $('#doc-list-container tr').not('.doc-table-message').length <= 1;
+                    var page = (onlyRowLeft && state.currentPage > 0) ? state.currentPage - 1 : state.currentPage;
+                    loadDocuments(page);
+                })
+                .catch(function (err) {
+                    closeModal('modal-delete-doc');
+                    showUploadAlert(err.message || 'Greška pri brisanju dokumenta.', 'error');
+                })
+                .finally(function () {
+                    $btn.prop('disabled', false).html('<i class="fa fa-trash"></i> Obriši');
+                });
+        });
+    }
+
+    function openDeleteDocModal(docId, docName) {
+        $('#delete-doc-confirm-btn').data('doc-id', docId);
+        $('#delete-doc-name-label').text('"' + docName + '"');
+        openModal('modal-delete-doc');
     }
 
     function populateMoveSelect(tree) {
@@ -660,30 +752,98 @@
     }
 
     function showListLoading() {
+        $('.doc-table-wrap').removeClass('is-empty');
         $('#doc-list-container').html(
-            '<tr><td colspan="4"><div class="doc-spinner">' +
+            '<tr class="doc-table-message"><td colspan="4"><div class="doc-spinner">' +
             '<i class="fa fa-spinner fa-spin"></i>Učitavanje...</div></td></tr>'
         );
         $('#doc-pagination').html('');
     }
 
     function showListError(msg) {
+        $('.doc-table-wrap').addClass('is-empty');
         $('#doc-list-container').html(
-            '<tr><td colspan="4"><div class="doc-empty-state">' +
-            '<i class="fa fa-exclamation-circle"></i>' +
-            '<p>' + escHtml(msg) + '</p></div></td></tr>'
+            '<tr class="doc-table-message"><td colspan="4"><div class="doc-empty-state is-error">' +
+            '<div class="doc-empty-icon"><i class="fa fa-exclamation-circle"></i></div>' +
+            '<h4 class="doc-empty-title">Nešto nije u redu</h4>' +
+            '<p class="doc-empty-text">' + escHtml(msg) + '</p></div></td></tr>'
         );
+    }
+
+    function buildEmptyStateHtml() {
+        var icon  = 'fa-file-o';
+        var title = 'Još nema dokumenata';
+        var text  = 'Otpremite prvi fajl da se pojavi u listi.';
+        var actions = '';
+
+        if (state.searchQuery) {
+            icon  = 'fa-search';
+            title = 'Nema rezultata';
+            text  = 'Nijedan dokument ne odgovara pretrazi „' + escHtml(state.searchQuery) + '“.';
+            actions =
+                '<button type="button" class="btn-secondary-doc" id="doc-empty-clear-search">' +
+                '<i class="fa fa-times"></i> Obriši pretragu</button>';
+        } else if (state.currentFolderId === 'root') {
+            icon  = 'fa-inbox';
+            title = 'Root je prazan';
+            text  = 'Nema dokumenata van foldera. Premestite fajl ovde ili otpremite novi.';
+        } else if (state.currentFolderId != null) {
+            var folderName = (findFolderInTree(state.folderTree, state.currentFolderId) || {}).name || 'Folder';
+            icon  = 'fa-folder-open-o';
+            title = 'Ovaj folder je prazan';
+            text  = 'U folderu „' + escHtml(folderName) + '“ još nema dokumenata.';
+            actions =
+                '<button type="button" class="btn-secondary-doc" id="doc-empty-clear-filter">' +
+                '<i class="fa fa-th-list"></i> Prikaži sve</button>';
+        }
+
+        if (perms.write && !state.searchQuery) {
+            actions =
+                '<button type="button" class="btn-primary-doc" id="doc-empty-upload-btn">' +
+                '<i class="fa fa-upload"></i> Otpremi dokument</button>' +
+                actions;
+        }
+
+        return '<div class="doc-empty-state">' +
+            '<div class="doc-empty-icon"><i class="fa ' + icon + '"></i></div>' +
+            '<h4 class="doc-empty-title">' + title + '</h4>' +
+            '<p class="doc-empty-text">' + text + '</p>' +
+            (actions ? '<div class="doc-empty-actions">' + actions + '</div>' : '') +
+            '</div>';
+    }
+
+    function bindEmptyStateActions() {
+        $('#doc-empty-upload-btn').on('click', function () {
+            var $card = $('#upload-card');
+            if ($card.length && !$card.hasClass('hidden')) {
+                $('html, body').animate({ scrollTop: $card.offset().top - 80 }, 280);
+                setTimeout(function () {
+                    $('#upload-file-input').trigger('click');
+                }, 300);
+            }
+        });
+        $('#doc-empty-clear-filter').on('click', function () {
+            $('#doc-filter-clear').trigger('click');
+        });
+        $('#doc-empty-clear-search').on('click', function () {
+            state.searchQuery = '';
+            $('#doc-search-input').val('');
+            $('#doc-filter-bar').hide();
+            loadDocuments(0);
+        });
     }
 
     function renderDocuments(docs) {
         if (!docs || docs.length === 0) {
+            $('.doc-table-wrap').addClass('is-empty');
             $('#doc-list-container').html(
-                '<tr><td colspan="4"><div class="doc-empty-state">' +
-                '<i class="fa fa-file-o"></i>' +
-                '<p>Nema dokumenata.</p></div></td></tr>'
+                '<tr class="doc-table-message"><td colspan="4">' + buildEmptyStateHtml() + '</td></tr>'
             );
+            bindEmptyStateActions();
             return;
         }
+
+        $('.doc-table-wrap').removeClass('is-empty');
 
         var rows = docs.map(function (doc) {
             var typeInfo = getTypeInfo(doc.contentType, doc.fileName);
@@ -697,6 +857,14 @@
                 '<button class="btn-icon-doc btn-preview-doc" data-id="' + id + '" ' +
                 'data-name="' + name + '" data-type="' + mime + '" title="Pregled">' +
                 '<i class="fa fa-eye"></i><span>Pregled</span></button>';
+
+            var moveBtn = !perms.write ? '' :
+                '<button class="btn-icon-doc btn-move-doc" data-id="' + id + '" data-name="' + name + '" title="Premesti u folder">' +
+                '<i class="fa fa-share"></i><span>Premesti</span></button>';
+
+            var deleteBtn = !perms.delete ? '' :
+                '<button class="btn-icon-doc btn-delete-doc" data-id="' + id + '" data-name="' + name + '" title="Obriši">' +
+                '<i class="fa fa-trash"></i><span>Obriši</span></button>';
 
             return [
                 '<tr>',
@@ -717,9 +885,8 @@
                 '  <button class="btn-icon-doc btn-download-doc" data-id="' + id + '" data-name="' + name + '" title="Preuzmi">',
                 '    <i class="fa fa-download"></i><span>Preuzmi</span>',
                 '  </button>',
-                '  <button class="btn-icon-doc btn-move-doc" data-id="' + id + '" data-name="' + name + '" title="Premesti u folder">',
-                '    <i class="fa fa-share"></i><span>Premesti</span>',
-                '  </button>',
+                moveBtn,
+                deleteBtn,
                 '  </div>',
                 '</td>',
                 '</tr>'
@@ -738,7 +905,10 @@
                 downloadDocument($(this).data('id'), $(this).data('name'));
             })
             .on('click.docactions', '.btn-move-doc', function () {
-                openMoveDocModal($(this).data('id'), $(this).data('name'));
+                if (perms.write) openMoveDocModal($(this).data('id'), $(this).data('name'));
+            })
+            .on('click.docactions', '.btn-delete-doc', function () {
+                if (perms.delete) openDeleteDocModal($(this).data('id'), $(this).data('name'));
             });
     }
 

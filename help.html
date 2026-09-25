@@ -5,8 +5,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<title>Pomoć i Česta pitanja - Optimus</title>
-	<meta name="description" content="Često postavljana pitanja i pomoć. Saznajte više o naručivanju, isporuci, plaćanju, reklamacijama i povraćaju proizvoda u Optimus prodavnici.">
+	<title>Pomoć i Česta pitanja - FirstCode</title>
+	<meta name="description" content="Pomoć za FirstCode: nalog, otpremanje dokumenata, folderi, pregled i preuzimanje.">
 
 	<!-- Google font -->
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
@@ -47,7 +47,7 @@
 					<div class="col-md-3">
 						<div class="header-logo">
 							<a href="index.html" class="logo">
-								<img src="./img/logo.svg" alt="Optimus logo">
+								<img src="./img/logo.svg" alt="FirstCode logo">
 							</a>
 						</div>
 					</div>
@@ -59,12 +59,12 @@
 
 					<!-- NAV -->
 					<div class="col-md-3 clearfix">
-						<div class="header-ctn" style="display:flex;align-items:center;justify-content:flex-end;height:100%;gap:20px;">
-							<a href="index.html" style="color:#0A0A0A;font-weight:600;text-decoration:none;font-size:14px;">
+						<div class="header-ctn">
+							<a href="documents.html" class="header-action header-docs-link">
 								<i class="fa fa-folder-o"></i> Dokumenti
 							</a>
-							<div class="nav-account-wrap" style="position:relative;">
-								<a href="account.html" id="nav-account-link" style="color:#fff;text-decoration:none;font-size:14px;">
+							<div class="nav-account-wrap">
+								<a href="account.html" id="nav-account-link" class="header-action">
 									<i class="fa fa-user-o"></i> <span id="nav-account-label">Moj nalog</span>
 								</a>
 							</div>
@@ -96,7 +96,7 @@
 				<div class="col-md-8">
 					<span class="page-hero-badge"><i class="fa fa-question-circle"></i> &nbsp;Pomoć</span>
 					<h1>Česta pitanja &mdash; <span>FAQ</span></h1>
-					<p>Odgovori na najčešće postavljena pitanja o naručivanju, isporuci, plaćanju i povraćaju.</p>
+					<p>Kako da otvorite nalog, otpremite dokument i sredite foldere.</p>
 				</div>
 			</div>
 		</div>
@@ -106,325 +106,207 @@
 	<!-- FAQ SECTION -->
 	<div class="section faq-section">
 		<div class="container">
-			<!-- FAQ Categories -->
 			<div class="row">
 				<div class="col-md-12">
 					<div class="faq-categories">
-						<a href="#narudzba" class="faq-category-link active">
-							<i class="fa fa-shopping-cart"></i>
-							<span>Narudžbina</span>
-						</a>
-						<a href="#isporuka" class="faq-category-link">
-							<i class="fa fa-truck"></i>
-							<span>Isporuka</span>
-						</a>
-						<a href="#placanje" class="faq-category-link">
-							<i class="fa fa-credit-card"></i>
-							<span>Plaćanje</span>
-						</a>
-						<a href="#reklamacija" class="faq-category-link">
-							<i class="fa fa-refresh"></i>
-							<span>Reklamacija</span>
-						</a>
-						<a href="#nalog" class="faq-category-link">
+						<a href="#nalog" class="faq-category-link active">
 							<i class="fa fa-user"></i>
 							<span>Nalog</span>
 						</a>
+						<a href="#dokumenti" class="faq-category-link">
+							<i class="fa fa-file-text-o"></i>
+							<span>Dokumenti</span>
+						</a>
+						<a href="#folderi" class="faq-category-link">
+							<i class="fa fa-folder-open"></i>
+							<span>Folderi</span>
+						</a>
+						<a href="#pregled" class="faq-category-link">
+							<i class="fa fa-eye"></i>
+							<span>Pregled</span>
+						</a>
 					</div>
 				</div>
 			</div>
 
-			<!-- FAQ: Narudžbina -->
-			<div class="row faq-category-section" id="narudzba">
-				<div class="col-md-12">
-					<div class="faq-category-header">
-						<i class="fa fa-shopping-cart"></i>
-						<h2>Narudžbina</h2>
-					</div>
-
-					<div class="faq-item">
-						<div class="faq-question">
-							<i class="fa fa-plus-circle"></i>
-							<h3>Kako da naručim proizvod?</h3>
-						</div>
-						<div class="faq-answer">
-							<p>Naručivanje je jednostavno:</p>
-							<ol>
-								<li>Pronađite željeni proizvod preko pretrage ili kategorija</li>
-								<li>Kliknite na "Dodaj u korpu"</li>
-								<li>U korpi proverite proizvode i količinu</li>
-								<li>Kliknite na "Naručivanje"</li>
-								<li>Popunite podatke za isporuku i odaberite način plaćanja</li>
-								<li>Potvrdite porudžbinu</li>
-							</ol>
-							<p>Nakon potvrde, dobićete email sa brojem porudžbine i detaljima.</p>
-						</div>
-					</div>
-
-					<div class="faq-item">
-						<div class="faq-question">
-							<i class="fa fa-plus-circle"></i>
-							<h3>Da li mogu da naručim telefonom?</h3>
-						</div>
-						<div class="faq-answer">
-							<p>Naravno! Možete nas pozvati na <a href="tel:+381638558708">+381 (0)63 8558708</a> radnim
-								danima od 09:00 do 17:00 sati, i subotom od 09:00 do 14:00 sati. Naši saradnici će vam
-								pomoći oko odabira i naručivanja proizvoda.</p>
-						</div>
-					</div>
-
-					<div class="faq-item">
-						<div class="faq-question">
-							<i class="fa fa-plus-circle"></i>
-							<h3>Da li mogu da otkažem ili izmenim porudžbinu?</h3>
-						</div>
-						<div class="faq-answer">
-							<p>Možete otkazati ili izmeniti porudžbinu dok ona još nije poslata. Kontaktirajte nas što
-								pre putem telefona <a href="tel:+381638558708">+381 (0)63 8558708</a> ili emaila <a
-										href="mailto:prodaja@firstcode.in.rs">prodaja@firstcode.in.rs</a> sa brojem
-								porudžbine.</p>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- FAQ: Isporuka -->
-			<div class="row faq-category-section" id="isporuka">
-				<div class="col-md-12">
-					<div class="faq-category-header">
-						<i class="fa fa-truck"></i>
-						<h2>Isporuka</h2>
-					</div>
-
-					<div class="faq-item">
-						<div class="faq-question">
-							<i class="fa fa-plus-circle"></i>
-							<h3>Koliko košta isporuka?</h3>
-						</div>
-						<div class="faq-answer">
-							<p>Cena isporuke zavisi od vrednosti porudžbine:</p>
-							<ul>
-								<li><strong>Besplatna dostava</strong> za porudžbine preko 10.000 RSD</li>
-								<li><strong>400 RSD</strong> za porudžbine ispod 10.000 RSD</li>
-								<li><strong>Lično preuzimanje</strong> u prodajnom mestu u Velikoj Plani - <strong>BESPLATNO</strong></li>
-							</ul>
-						</div>
-					</div>
-
-					<div class="faq-item">
-						<div class="faq-question">
-							<i class="fa fa-plus-circle"></i>
-							<h3>Koliko traje isporuka?</h3>
-						</div>
-						<div class="faq-answer">
-							<p>Isporuka se vrši u roku od <strong>3-5 radna dana</strong> od potvrde porudžbine za artikle koji su na stanju. Za artikle koje treba naručiti od dobavljača, rok isporuke je <strong>7-14 radnih dana</strong>.</p>
-							<p>O statusu isporuke bićete obavešteni putem telefona ili email-a.</p>
-						</div>
-					</div>
-
-					<div class="faq-item">
-						<div class="faq-question">
-							<i class="fa fa-plus-circle"></i>
-							<h3>Na koje lokacije isporučujete?</h3>
-						</div>
-						<div class="faq-answer">
-							<p>Trenutno vršimo isporuku na teritoriji <strong>cele Srbije</strong> preko pouzdanih kurirskih službi. Za isporuku van Srbije, molimo vas da nas kontaktirate za poseban dogovor.</p>
-						</div>
-					</div>
-
-					<div class="faq-item">
-						<div class="faq-question">
-							<i class="fa fa-plus-circle"></i>
-							<h3>Mogu li pratiti svoju pošiljku?</h3>
-						</div>
-						<div class="faq-answer">
-							<p>Da, nakon što pošiljka bude predata kurirskoj službi, dobićete broj za praćenje (tracking number) putem email-a ili SMS-a, pomoću kojeg možete pratiti status isporuke.</p>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- FAQ: Plaćanje -->
-			<div class="row faq-category-section" id="placanje">
-				<div class="col-md-12">
-					<div class="faq-category-header">
-						<i class="fa fa-credit-card"></i>
-						<h2>Plaćanje</h2>
-					</div>
-
-					<div class="faq-item">
-						<div class="faq-question">
-							<i class="fa fa-plus-circle"></i>
-							<h3>Koji načini plaćanja su dostupni?</h3>
-						</div>
-						<div class="faq-answer">
-							<p>Nudimo sledeće opcije plaćanja:</p>
-							<ul>
-								<li><i class="fa fa-check"></i> <strong>Pouzećem</strong> - plaćanje kuriru u gotovini ili karticom pri preuzimanju</li>
-								<li><i class="fa fa-check"></i> <strong>Virmanom/uplatnicom</strong> - uplata na poslovni račun (potrebna je avansna uplata)</li>
-								<li><i class="fa fa-check"></i> <strong>U prodajnom mestu</strong> - gotovina ili kartica prilikom ličnog preuzimanja</li>
-							</ul>
-						</div>
-					</div>
-
-					<div class="faq-item">
-						<div class="faq-question">
-							<i class="fa fa-plus-circle"></i>
-							<h3>Da li je plaćanje karticom bezbedno?</h3>
-						</div>
-						<div class="faq-answer">
-							<p>Apsolutno! Koristimo pouzdane sisteme za online plaćanje sa SSL enkripcijom i 3D Secure zaštitom. Vaši kartični podaci se ne skladište na našem serveru već se obrađuju direktno preko banke.</p>
-						</div>
-					</div>
-
-					<div class="faq-item">
-						<div class="faq-question">
-							<i class="fa fa-plus-circle"></i>
-							<h3>Kada će novac biti zadužen sa moje kartice?</h3>
-						</div>
-						<div class="faq-answer">
-							<p>Kod online plaćanja, novac se zadužuje odmah nakon potvrde porudžbine. Kod plaćanja pouzećem, zaduženje se vrši tek kada preuzmete proizvod od kurira.</p>
-						</div>
-					</div>
-
-					<div class="faq-item">
-						<div class="faq-question">
-							<i class="fa fa-plus-circle"></i>
-							<h3>Da li mogu dobiti fiskalnu potvrdu ili fakturu?</h3>
-						</div>
-						<div class="faq-answer">
-							<p>Naravno! Uz svaku porudžbinu dobijate fiskalnu potvrdu. Ukoliko vam je potrebna faktura (za pravna lica), molimo vas da to navedete u napomeni prilikom naručivanja ili nas kontaktirajte.</p>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- FAQ: Reklamacija -->
-			<div class="row faq-category-section" id="reklamacija">
-				<div class="col-md-12">
-					<div class="faq-category-header">
-						<i class="fa fa-refresh"></i>
-						<h2>Reklamacija i povraćaj</h2>
-					</div>
-
-					<div class="faq-item">
-						<div class="faq-question">
-							<i class="fa fa-plus-circle"></i>
-							<h3>Koliko imam vremena za povraćaj robe?</h3>
-						</div>
-						<div class="faq-answer">
-							<p>Imate pravo da vratite proizvod u roku od <strong>14 dana</strong> od dana preuzimanja, bez navođenja razloga, u skladu sa Zakonom o zaštiti potrošača. Proizvod mora biti neotpakovan i u originalnom stanju.</p>
-						</div>
-					</div>
-
-					<div class="faq-item">
-						<div class="faq-question">
-							<i class="fa fa-plus-circle"></i>
-							<h3>Kako da reklamiram proizvod?</h3>
-						</div>
-						<div class="faq-answer">
-							<p>Ukoliko proizvod ima nedostatak ili kvar:</p>
-							<ol>
-								<li>Kontaktirajte nas na <a href="tel:+381638558708">+381 (0)63 8558708</a> ili <a
-										href="mailto:prodaja@firstcode.in.rs">prodaja@firstcode.in.rs</a></li>
-								<li>Dostavite proizvod sa računom/fiskalnim isečkom u naše prodajno mesto ili ga pošaljite kurirskom službom</li>
-								<li>Popunite reklamacioni list (može se preuzeti u prodavnici ili online)</li>
-								<li>Proizvod će biti pregledan u roku od 3-5 radnih dana</li>
-							</ol>
-						</div>
-					</div>
-
-					<div class="faq-item">
-						<div class="faq-question">
-							<i class="fa fa-plus-circle"></i>
-							<h3>Šta je garancija i koliko traje?</h3>
-						</div>
-						<div class="faq-answer">
-							<p>Svi proizvodi imaju zakonsku garanciju od <strong>24 meseca</strong>. Dodatno, za određene proizvode postoji i garancija proizvođača koja može biti duža. Garancija pokriva fabricke greške, ali ne pokriva oštećenja nastala neadekvatnom upotrebom.</p>
-						</div>
-					</div>
-
-					<div class="faq-item">
-						<div class="faq-question">
-							<i class="fa fa-plus-circle"></i>
-							<h3>Mogu li zameniti proizvod za drugi?</h3>
-						</div>
-						<div class="faq-answer">
-							<p>Da, u roku od 14 dana možete zameniti proizvod za drugi model ili boju, pod uslovom da je proizvod nekorišćen i u originalnom pakovanju. Za zamenu, kontaktirajte nas da dogovorimo detalje.</p>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- FAQ: Nalog -->
 			<div class="row faq-category-section" id="nalog">
 				<div class="col-md-12">
 					<div class="faq-category-header">
 						<i class="fa fa-user"></i>
-						<h2>Korisnički nalog</h2>
+						<h2>Nalog</h2>
 					</div>
 
 					<div class="faq-item">
 						<div class="faq-question">
 							<i class="fa fa-plus-circle"></i>
-							<h3>Da li moram da napravim nalog da bih naručio?</h3>
+							<h3>Da li mogu da vidim dokumente bez prijave?</h3>
 						</div>
 						<div class="faq-answer">
-							<p>Ne morate. Možete naručiti i kao gost bez registracije. Međutim, registrovani korisnici imaju prednosti:</p>
-							<ul>
-								<li><i class="fa fa-check"></i> Brže naručivanje - sačuvani podaci</li>
-								<li><i class="fa fa-check"></i> Praćenje istorije porudžbina</li>
-								<li><i class="fa fa-check"></i> Lista želja i poređenje proizvoda</li>
-								<li><i class="fa fa-check"></i> Ekskluzivne ponude i popusti</li>
-							</ul>
+							<p>Početna strana, ova pomoć i kontakt su javni. Lista dokumenata, otpremanje i folderi traže prijavljen nalog. Ako otvorite <a href="documents.html">Dokumenti</a> bez sesije, stranica vas vodi na prijavu i vraća nazad posle uspešnog ulaska.</p>
 						</div>
 					</div>
 
 					<div class="faq-item">
 						<div class="faq-question">
 							<i class="fa fa-plus-circle"></i>
-							<h3>Kako da promenim lozinku?</h3>
+							<h3>Kako da napravim nalog?</h3>
 						</div>
 						<div class="faq-answer">
-							<p>Prijavite se na svoj nalog, idite na "Moj profil" > "Podešavanja" > "Promeni lozinku". Unesite trenutnu lozinku i novu lozinku, pa potvrdite izmene.</p>
+							<p>Na <a href="register.html">registraciji</a> unesite ime, prezime, email i lozinku. Na adresu stiže poruka za potvrdu. Dok email nije potvrđen, prijava ostaje blokirana — na ekranu prijave možete zatražiti novu poruku.</p>
 						</div>
 					</div>
 
 					<div class="faq-item">
 						<div class="faq-question">
 							<i class="fa fa-plus-circle"></i>
-							<h3>Zaboravio/la sam lozinku, šta da radim?</h3>
+							<h3>Zaboravio sam lozinku.</h3>
 						</div>
 						<div class="faq-answer">
-							<p>Na stranici za prijavu kliknite na "Zaboravljena lozinka", unesite email adresu koju ste koristili pri registraciji i dobićete link za resetovanje lozinke na email.</p>
+							<p>Na prijavi otvorite <a href="forgot-password.html">zaboravljenu lozinku</a>, unesite email naloga i pratite link iz poruke. Nova lozinka mora imati najmanje 8 znakova.</p>
 						</div>
 					</div>
 
 					<div class="faq-item">
 						<div class="faq-question">
 							<i class="fa fa-plus-circle"></i>
-							<h3>Mogu li obrisati svoj nalog?</h3>
+							<h3>Gde menjam ime ili lozinku?</h3>
 						</div>
 						<div class="faq-answer">
-							<p>Da, u skladu sa GDPR propisima imate pravo na brisanje naloga i podataka. Kontaktirajte nas putem email-a <a href="mailto:prodaja@firstcode.in.rs">prodaja@firstcode.in.rs</a> i vaš zahtev će biti procesuiran u roku od 30 dana.</p>
+							<p>U <a href="account.html">Mom nalogu</a> su dve stavke: profil (ime i prezime; email se ne menja ovde) i promena lozinke (trenutna, nova i potvrda). Odjava je u istom meniju i vraća vas na početnu.</p>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<!-- Contact CTA Section -->
+			<div class="row faq-category-section" id="dokumenti">
+				<div class="col-md-12">
+					<div class="faq-category-header">
+						<i class="fa fa-file-text-o"></i>
+						<h2>Dokumenti</h2>
+					</div>
+
+					<div class="faq-item">
+						<div class="faq-question">
+							<i class="fa fa-plus-circle"></i>
+							<h3>Koje fajlove mogu da otpremim?</h3>
+						</div>
+						<div class="faq-answer">
+							<p>Podržani formati su <strong>PDF, DOC, DOCX, JSON, XML i TXT</strong>. Na stranici dokumenata kliknite zonu za otpremanje ili prevucite fajl u nju, pa potvrdite slanje. Traka pokazuje napredak.</p>
+						</div>
+					</div>
+
+					<div class="faq-item">
+						<div class="faq-question">
+							<i class="fa fa-plus-circle"></i>
+							<h3>Kako da nađem dokument?</h3>
+						</div>
+						<div class="faq-answer">
+							<p>Polje za pretragu u zaglavlju traži po nazivu kroz sve foldere. Klik na folder u levom stablu sužava listu samo na taj folder. Lista je podeljena na stranice od po 10 stavki.</p>
+						</div>
+					</div>
+
+					<div class="faq-item">
+						<div class="faq-question">
+							<i class="fa fa-plus-circle"></i>
+							<h3>Šta je razlika između Dokumenti i Moja dokumenta?</h3>
+						</div>
+						<div class="faq-answer">
+							<p><a href="documents.html">Dokumenti</a> su radni prostor: otpremanje, folderi, premeštanje, pregled i preuzimanje. <a href="my-documents.html">Moja dokumenta</a> u nalogu su pregled fajlova koje ste vi otpremili, sa pretragom i preuzimanjem.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row faq-category-section" id="folderi">
+				<div class="col-md-12">
+					<div class="faq-category-header">
+						<i class="fa fa-folder-open"></i>
+						<h2>Folderi</h2>
+					</div>
+
+					<div class="faq-item">
+						<div class="faq-question">
+							<i class="fa fa-plus-circle"></i>
+							<h3>Kako da napravim folder?</h3>
+						</div>
+						<div class="faq-answer">
+							<p>U stablu foldera dugme sa plusom pravi folder na korenu. Unutar postojećeg foldera isto dugme pravi podfolder. Naziv je obavezan i može imati do 255 znakova. Folder možete i preimenovati.</p>
+						</div>
+					</div>
+
+					<div class="faq-item">
+						<div class="faq-question">
+							<i class="fa fa-plus-circle"></i>
+							<h3>Šta se dešava kad obrišem folder?</h3>
+						</div>
+						<div class="faq-answer">
+							<p>Brišu se taj folder i njegovi podfolderi. Dokumenti iz njih ne nestaju: prelaze na koren, pa ostaju u listi i mogu se ponovo smestiti.</p>
+						</div>
+					</div>
+
+					<div class="faq-item">
+						<div class="faq-question">
+							<i class="fa fa-plus-circle"></i>
+							<h3>Kako da premestim dokument?</h3>
+						</div>
+						<div class="faq-answer">
+							<p>U redu dokumenta izaberite premeštanje, pa odredišni folder ili koren. Fajl se ne otprema ponovo.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row faq-category-section" id="pregled">
+				<div class="col-md-12">
+					<div class="faq-category-header">
+						<i class="fa fa-eye"></i>
+						<h2>Pregled i preuzimanje</h2>
+					</div>
+
+					<div class="faq-item">
+						<div class="faq-question">
+							<i class="fa fa-plus-circle"></i>
+							<h3>Šta mogu da otvorim u pregledaču?</h3>
+						</div>
+						<div class="faq-answer">
+							<p><strong>PDF</strong> se otvara u prozoru za pregled. <strong>JSON, XML i TXT</strong> se prikazuju kao tekst. <strong>DOC i DOCX</strong> nemaju pregled ovde — ostaje preuzimanje originala.</p>
+						</div>
+					</div>
+
+					<div class="faq-item">
+						<div class="faq-question">
+							<i class="fa fa-plus-circle"></i>
+							<h3>Kako da preuzmem original?</h3>
+						</div>
+						<div class="faq-answer">
+							<p>U listi je dugme Preuzmi. U otvorenom pregledu isto dugme snima originalni fajl, bez konverzije.</p>
+						</div>
+					</div>
+
+					<div class="faq-item">
+						<div class="faq-question">
+							<i class="fa fa-plus-circle"></i>
+							<h3>Da li drugi korisnici vide moje fajlove?</h3>
+						</div>
+						<div class="faq-answer">
+							<p>Ne. Svaki zahtev ide sa vašom prijavom. Lista, pregled i preuzimanje važe za dokumente vašeg naloga.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<div class="row faq-cta-section">
 				<div class="col-md-12">
 					<div class="faq-cta-box">
 						<i class="fa fa-comments"></i>
-						<h3>Niste pronašli odgovor na svoje pitanje?</h3>
-						<p>Naš tim je tu da vam pomogne. Kontaktirajte nas putem telefona, email-a ili posetite naše prodajno mesto.</p>
+						<h3>Niste pronašli odgovor?</h3>
+						<p>Pošaljite poruku preko kontakta ili otvorite dokumente ako ste već prijavljeni.</p>
 						<div class="faq-cta-buttons">
-							<a href="tel:+381638558708" class="btn-cta btn-primary">
-								<i class="fa fa-phone"></i> Pozovite nas
+							<a href="contact.html" class="btn-cta btn-primary">
+								<i class="fa fa-envelope"></i> Kontakt
 							</a>
-							<a href="contact.html" class="btn-cta btn-secondary">
-								<i class="fa fa-envelope"></i> Pošaljite poruku
+							<a href="documents.html" class="btn-cta btn-secondary">
+								<i class="fa fa-folder-o"></i> Dokumenti
 							</a>
 						</div>
 					</div>
@@ -436,58 +318,25 @@
 
 	<!-- FOOTER -->
 	<footer id="footer">
-	<!-- top footer -->
-	<div class="section">
 		<div class="container">
-			<div class="row">
-				<div class="col-md-4 col-xs-6">
-					<div class="footer">
-						<h3 class="footer-title">Optimus</h3>
-						<p>Sigurna platforma za čuvanje i upravljanje vašim dokumentima.</p>
-					</div>
-				</div>
-
-				<div class="col-md-4 col-xs-6">
-					<div class="footer">
-						<h3 class="footer-title">Navigacija</h3>
-						<ul class="footer-links">
-							<li><a href="index.html">Dokumenti</a></li>
-							<li><a href="about.html">O nama</a></li>
-							<li><a href="contact.html">Kontakt</a></li>
-							<li><a href="help.html">Pomoć</a></li>
-						</ul>
-					</div>
-				</div>
-
-				<div class="col-md-4 col-xs-6">
-					<div class="footer">
-						<h3 class="footer-title">Nalog</h3>
-						<ul class="footer-links">
-							<li><a href="login.html">Prijava</a></li>
-							<li><a href="register.html">Registracija</a></li>
-							<li><a href="account.html">Moj nalog</a></li>
-							<li><a href="privacy-policy.html">Politika privatnosti</a></li>
-							<li><a href="terms-and-conditions.html">Uslovi korišćenja</a></li>
-						</ul>
-					</div>
-				</div>
+			<div class="app-footer">
+				<a href="index.html" class="app-footer-brand" aria-label="FirstCode, početna">
+					<img src="./img/logo.svg" alt="FirstCode">
+				</a>
+				<nav class="app-footer-nav" aria-label="Podnožje">
+					<a href="documents.html">Dokumenti</a>
+					<a href="about.html">O nama</a>
+					<a href="help.html">Pomoć</a>
+					<a href="contact.html">Kontakt</a>
+					<a href="account.html" class="footer-account-link">Moj nalog</a>
+				</nav>
+			</div>
+			<div class="app-footer-meta">
+				<span class="copyright">© 2026 FirstCode</span>
+				<span class="app-footer-note">Platforma za čuvanje i upravljanje dokumentima</span>
 			</div>
 		</div>
-	</div>
-	<!-- /top footer -->
-
-	<!-- bottom footer -->
-	<div id="bottom-footer" class="section">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12 text-center">
-					<span class="copyright">© 2026 Optimus. Sva prava zadržana.</span>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- /bottom footer -->
-</footer>
+	</footer>
 	<!-- /FOOTER -->
 
 	<!-- jQuery Plugins -->

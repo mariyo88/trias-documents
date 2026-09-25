@@ -1,13 +1,18 @@
 /* ── Page Hero Banner (shared across pages) ── */
 .page-hero {
-    background: linear-gradient(135deg, #0A0A0A 0%, #1a1b2e 60%, #C8102E 100%);
+    background:
+        radial-gradient(ellipse 70% 80% at 100% 0%, rgba(200, 16, 46, 0.35) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 60% at 0% 100%, rgba(255, 255, 255, 0.04) 0%, transparent 50%),
+        linear-gradient(135deg, #0A0A0A 0%, #141414 45%, #1a1214 100%);
     color: #fff;
-    padding: 0 0 50px;
+    padding: 0 0 52px;
     position: relative;
     overflow: hidden;
 }
 .page-hero > .container {
-    padding-top: 10px;
+    padding-top: 28px;
+    position: relative;
+    z-index: 1;
 }
 .page-hero-nav {
     margin-bottom: 0;
@@ -15,65 +20,111 @@
     background: transparent !important;
     border-bottom: none !important;
     box-shadow: none !important;
+    position: relative;
+    z-index: 2;
 }
 .page-hero-nav #responsive-nav .main-nav > li > a {
-    color: rgba(255,255,255,0.75);
+    color: rgba(255, 255, 255, 0.7);
     font-size: 13px;
     font-weight: 600;
-    padding: 8px 16px;
-    transition: color 0.2s;
+    letter-spacing: 0.2px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    transition: color 0.2s, background 0.2s;
+}
+.page-hero-nav #responsive-nav .main-nav > li > a:after {
+    display: none;
 }
 .page-hero-nav #responsive-nav .main-nav > li > a:hover,
 .page-hero-nav #responsive-nav .main-nav > li.active > a {
     color: #fff;
-    background: rgba(255,255,255,0.08);
-    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.08);
+}
+.page-hero-nav #responsive-nav .main-nav > li.active > a {
+    background: rgba(200, 16, 46, 0.25);
+    color: #fff;
 }
 .page-hero::before {
     content: '';
     position: absolute;
-    top: -50%;
-    right: -10%;
-    width: 500px;
-    height: 500px;
-    background: rgba(66,116,217,0.08);
+    top: -40%;
+    right: -8%;
+    width: 420px;
+    height: 420px;
+    background: rgba(200, 16, 46, 0.12);
     border-radius: 50%;
+    pointer-events: none;
 }
 .page-hero::after {
     content: '';
     position: absolute;
-    bottom: -30%;
-    left: -5%;
-    width: 350px;
-    height: 350px;
-    background: rgba(255,255,255,0.03);
+    bottom: -35%;
+    left: -6%;
+    width: 320px;
+    height: 320px;
+    background: rgba(255, 255, 255, 0.03);
     border-radius: 50%;
+    pointer-events: none;
 }
 .page-hero h1 {
     font-size: 38px;
     font-weight: 700;
     margin-bottom: 12px;
     color: #fff;
+    letter-spacing: -0.3px;
+    line-height: 1.2;
 }
 .page-hero h1 span { color: #C8102E; }
 .page-hero p {
-    font-size: 17px;
-    color: rgba(255,255,255,0.75);
+    font-size: 16px;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.72);
     margin-bottom: 0;
-    max-width: 520px;
+    max-width: 540px;
 }
 .page-hero-badge {
-    display: inline-block;
-    background: rgba(66,116,217,0.2);
-    border: 1px solid rgba(66,116,217,0.5);
-    color: #95CCDD;
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(200, 16, 46, 0.18);
+    border: 1px solid rgba(200, 16, 46, 0.45);
+    color: #ff8a98;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
     font-weight: 600;
-    letter-spacing: 1px;
+    letter-spacing: 0.8px;
     text-transform: uppercase;
     margin-bottom: 18px;
+}
+.page-hero-badge i {
+    color: #C8102E;
+}
+
+@media only screen and (max-width: 767px) {
+    .page-hero {
+        padding-bottom: 40px;
+    }
+    .page-hero > .container {
+        padding-top: 20px;
+    }
+    .page-hero h1 {
+        font-size: 28px;
+    }
+    .page-hero p {
+        font-size: 15px;
+    }
+}
+
+/* Mobile drawer must escape the hero stacking context so page
+   content (e.g. stats bar) cannot paint over the open menu. */
+@media only screen and (max-width: 991px) {
+    .page-hero-nav {
+        z-index: auto;
+    }
+    .page-hero-nav #responsive-nav {
+        z-index: 110;
+    }
 }
 
 /* ── Cart empty state in dropdown ── */

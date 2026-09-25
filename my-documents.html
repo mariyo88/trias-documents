@@ -4,8 +4,8 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Moj nalog - FirstCode</title>
-	<meta name="description" content="Upravljajte vašim FirstCode nalogom, pratite narudžbine i ažurirajte profil.">
+	<title>Moja dokumenta - FirstCode</title>
+	<meta name="description" content="Pregled dokumenata koje ste vi uploadovali na FirstCode platformu.">
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
 	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
 	<link rel="stylesheet" href="css/font-awesome.min.css">
@@ -16,12 +16,11 @@
 	<link rel="manifest" href="site.webmanifest">
 	<link type="text/css" rel="stylesheet" href="css/style.css"/>
 	<link type="text/css" rel="stylesheet" href="css/account.css"/>
+	<link type="text/css" rel="stylesheet" href="css/documents.css"/>
 </head>
 <body>
 	<!-- HEADER -->
 	<header>
-
-		<!-- MAIN HEADER -->
 		<div id="header">
 			<div class="container">
 				<div class="row">
@@ -35,9 +34,7 @@
 					</div>
 					<!-- /LOGO -->
 
-					<!-- SEARCH BAR (placeholder — vidljiv samo na index.html) -->
 					<div class="col-md-6 header-search-placeholder"></div>
-					<!-- /SEARCH BAR -->
 
 					<!-- NAV -->
 					<div class="col-md-3 clearfix">
@@ -50,7 +47,6 @@
 									<i class="fa fa-user-o"></i> <span id="nav-account-label">Moj nalog</span>
 								</a>
 							</div>
-							<!-- Menu Toggle (mobile) -->
 							<div class="menu-toggle">
 								<a href="#"><i class="fa fa-bars"></i><span>Meni</span></a>
 							</div>
@@ -60,24 +56,16 @@
 				</div>
 			</div>
 		</div>
-		<!-- /MAIN HEADER -->
 	</header>
 	<!-- /HEADER -->
 
 	<!-- NAVIGATION -->
 	<nav id="navigation">
-		<!-- container -->
 		<div class="container">
-			<!-- responsive-nav -->
 			<div id="responsive-nav">
-				<!-- NAV -->
-				<!-- Static nav links for search engine crawlers; JS overwrites with full mega-menu at runtime -->
 				<ul class="main-nav nav navbar-nav"></ul>
-				<!-- /NAV -->
 			</div>
-			<!-- /responsive-nav -->
 		</div>
-		<!-- /container -->
 	</nav>
 	<!-- /NAVIGATION -->
 
@@ -94,13 +82,13 @@
 							<p class="account-user-email" id="sidebar-email"></p>
 						</div>
 						<ul class="account-nav">
-							<li><a href="#" class="active" data-tab="profile">
+							<li><a href="account.html">
 								<i class="fa fa-user"></i> Moj profil
 							</a></li>
-							<li><a href="#" data-tab="password">
+							<li><a href="account.html#password">
 								<i class="fa fa-lock"></i> Promena lozinke
 							</a></li>
-							<li><a href="my-documents.html">
+							<li><a href="my-documents.html" class="active">
 								<i class="fa fa-file-text-o"></i> Moja dokumenta
 							</a></li>
 							<li class="nav-divider"></li>
@@ -114,81 +102,82 @@
 
 				<!-- Main content -->
 				<div class="col-md-9">
+					<div class="doc-card my-docs-card">
+						<h3><i class="fa fa-list"></i>Lista dokumenata</h3>
+						<p class="my-docs-lead">Dokumenti koje ste vi otpremili.</p>
 
-					<!-- Profile panel -->
-					<div id="panel-profile" class="account-panel active">
-						<div class="account-card">
-							<h3><i class="fa fa-user"></i>Moj profil</h3>
-							<div id="profile-alert" class="account-alert"></div>
-							<form id="profile-form" class="account-form" novalidate>
-								<div class="row">
-									<div class="col-md-6">
-										<div class="form-group">
-											<label for="prof-firstName">Ime</label>
-											<input type="text" class="form-control" id="prof-firstName" autocomplete="given-name">
-										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<label for="prof-lastName">Prezime</label>
-											<input type="text" class="form-control" id="prof-lastName" autocomplete="family-name">
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="prof-email">Email adresa</label>
-									<input type="email" class="form-control" id="prof-email" readonly>
-									<small style="color:#999;font-size:12px;">Email adresa se ne može menjati.</small>
-								</div>
-								<div class="form-group">
-									<label for="prof-phone">Telefon</label>
-									<input type="tel" class="form-control" id="prof-phone" autocomplete="tel" placeholder="npr. +381638558708">
-								</div>
-								<button type="submit" class="save-btn" id="profile-save-btn">
-									<i class="fa fa-save"></i> Sačuvaj promjene
-								</button>
-							</form>
+						<form id="my-docs-search-form" class="my-docs-search" role="search" aria-label="Pretraga mojih dokumenata">
+							<input type="search" id="my-docs-search" placeholder="Pretraga po nazivu fajla..."
+							       aria-label="Pretraga po nazivu fajla" autocomplete="off">
+							<button type="submit" id="my-docs-search-btn" class="btn-primary-doc">
+								<i class="fa fa-search"></i> Pretraži
+							</button>
+						</form>
+
+						<div id="my-docs-filter-bar" class="doc-filter-bar" style="display:none;">
+							<i class="fa fa-search"></i>
+							<span>Pretraga:</span>
+							<span id="my-docs-filter-name" class="doc-filter-name"></span>
+							<button type="button" class="doc-filter-clear" id="my-docs-clear-btn">
+								<i class="fa fa-times"></i> Ukloni filter
+							</button>
 						</div>
-					</div>
 
-					<!-- Password panel -->
-					<div id="panel-password" class="account-panel">
-						<div class="account-card">
-							<h3><i class="fa fa-lock"></i>Promena lozinke</h3>
-							<div id="password-alert" class="account-alert"></div>
-							<form id="password-form" class="account-form" novalidate style="max-width:420px;">
-								<div class="form-group">
-									<label for="curr-password">Trenutna lozinka</label>
-									<div class="pass-wrap">
-										<input type="password" class="form-control" id="curr-password" autocomplete="current-password">
-										<button type="button" class="pass-toggle" data-target="curr-password" tabindex="-1"><i class="fa fa-eye"></i></button>
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="new-password">Nova lozinka <small style="color:#999;font-weight:400;">(min. 8 znakova)</small></label>
-									<div class="pass-wrap">
-										<input type="password" class="form-control" id="new-password" autocomplete="new-password">
-										<button type="button" class="pass-toggle" data-target="new-password" tabindex="-1"><i class="fa fa-eye"></i></button>
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="confirm-password">Potvrda nove lozinke</label>
-									<div class="pass-wrap">
-										<input type="password" class="form-control" id="confirm-password" autocomplete="new-password">
-										<button type="button" class="pass-toggle" data-target="confirm-password" tabindex="-1"><i class="fa fa-eye"></i></button>
-									</div>
-								</div>
-								<button type="submit" class="save-btn" id="password-save-btn">
-									<i class="fa fa-save"></i> Promijeni lozinku
-								</button>
-							</form>
+						<div id="my-docs-alert" class="doc-alert" role="alert"></div>
+
+						<div class="doc-table-wrap">
+							<table class="doc-table" aria-label="Lista dokumenata">
+								<thead>
+									<tr>
+										<th>Naziv</th>
+										<th>Veličina</th>
+										<th>Datum</th>
+										<th>Akcije</th>
+									</tr>
+								</thead>
+								<tbody id="my-docs-container">
+									<tr class="doc-table-message">
+										<td colspan="4">
+											<div class="doc-spinner">
+												<i class="fa fa-spinner fa-spin"></i>
+												Učitavanje...
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
-					</div>
 
+						<div id="my-docs-pagination" class="doc-pagination" role="navigation" aria-label="Stranice dokumenata"></div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- PREVIEW MODAL -->
+	<div id="doc-preview-overlay" class="doc-preview-overlay"
+	     role="dialog" aria-modal="true" aria-labelledby="preview-modal-title">
+		<div class="doc-preview-modal">
+			<div class="doc-preview-header">
+				<i class="fa fa-file-text-o" style="color:#1A5C2A;font-size:18px;flex-shrink:0;"></i>
+				<h4 id="preview-modal-title">Pregled dokumenta</h4>
+				<button id="preview-download-btn" class="preview-download-btn" type="button">
+					<i class="fa fa-download"></i> Preuzmi original
+				</button>
+				<button id="preview-close-btn" class="doc-preview-close" type="button"
+				        aria-label="Zatvori pregled">&times;</button>
+			</div>
+			<div id="doc-preview-body" class="doc-preview-body">
+				<div class="doc-preview-loading">
+					<i class="fa fa-spinner fa-spin"></i>
+					Učitavanje pregleda...
 				</div>
 			</div>
 		</div>
 	</div>
+	<!-- /PREVIEW MODAL -->
 
 	<!-- FOOTER -->
 	<footer id="footer">
@@ -219,7 +208,7 @@
 	<script src="js/auth.js"></script>
 	<script src="js/main.js"></script>
 	<script src="js/main-nav.js"></script>
-	<script src="js/account.js"></script>
+	<script src="js/my-documents.js"></script>
 
 </body>
 </html>

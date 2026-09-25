@@ -1,437 +1,308 @@
 <!DOCTYPE html>
 <html lang="sr">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Dokumenti - Optimus</title>
-    <meta name="description" content="Upravljajte vašim dokumentima — otpremite, pregledajte i preuzmite fajlove.">
-    <meta name="robots" content="noindex, nofollow">
+	<title>FirstCode — Dokumenti na jednom mestu</title>
+	<meta name="description" content="FirstCode je platforma za otpremanje, organizaciju, pregled i preuzimanje dokumenata. Prijavite se ili otvorite svoja dokumenta.">
 
-    <!-- Google font -->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="css/font-awesome.min.css">
 
-    <!-- Bootstrap -->
-    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+	<link rel="icon" type="image/x-icon" href="favicon.ico">
+	<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+	<link rel="manifest" href="site.webmanifest">
 
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="css/font-awesome.min.css">
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="manifest" href="site.webmanifest">
-
-    <!-- Global stylesheet -->
-    <link type="text/css" rel="stylesheet" href="css/style.css"/>
-
-    <!-- Documents stylesheet -->
-    <link type="text/css" rel="stylesheet" href="css/documents.css"/>
+	<link type="text/css" rel="stylesheet" href="css/style.css"/>
+	<link type="text/css" rel="stylesheet" href="css/page-hero.css"/>
+	<link type="text/css" rel="stylesheet" href="css/about.css"/>
+	<link type="text/css" rel="stylesheet" href="css/landing.css"/>
 </head>
 <body>
-
-<!-- HEADER -->
-<header>
-
-
-		<!-- MAIN HEADER -->
+	<header>
 		<div id="header">
 			<div class="container">
 				<div class="row">
-					<!-- LOGO -->
 					<div class="col-md-3">
 						<div class="header-logo">
 							<a href="index.html" class="logo">
-								<img src="./img/logo.svg" alt="Optimus logo">
+								<img src="./img/logo.svg" alt="FirstCode logo">
 							</a>
 						</div>
 					</div>
-					<!-- /LOGO -->
 
-					<!-- SEARCH BAR -->
-					<div class="col-md-6">
-						<div class="header-search">
-							<form id="doc-search-form" role="search" aria-label="Pretraga dokumenata">
-								<input class="input" type="search" id="doc-search-input" name="search"
-								       placeholder="Pretražite dokumente..." aria-label="Unesite naziv dokumenta">
-								<button type="submit" class="search-btn">
-									<i class="fa fa-search"></i> Pretraži
-								</button>
-							</form>
-						</div>
-					</div>
-					<!-- /SEARCH BAR -->
+					<div class="col-md-6 header-search-placeholder"></div>
 
-					<!-- NAV -->
 					<div class="col-md-3 clearfix">
-						<div class="header-ctn" style="display:flex;align-items:center;justify-content:flex-end;height:100%;gap:16px;">
-							<div class="nav-account-wrap" style="position:relative;">
-								<a href="account.html" id="nav-account-link" style="color:#fff;text-decoration:none;font-size:14px;">
+						<div class="header-ctn">
+							<a href="documents.html" class="header-action header-docs-link">
+								<i class="fa fa-folder-o"></i> Dokumenti
+							</a>
+							<div class="nav-account-wrap">
+								<a href="login.html" id="nav-account-link" class="header-action">
 									<i class="fa fa-user-o"></i> <span id="nav-account-label">Moj nalog</span>
 								</a>
 							</div>
-							<!-- Search Toggle (mobile) -->
-							<div class="search-toggle">
-								<a href="#" class="search-toggle-btn">
-									<i class="fa fa-search"></i>
-									<span>Pretraga</span>
-								</a>
-							</div>
-							<!-- Menu Toggle (mobile) -->
 							<div class="menu-toggle">
 								<a href="#"><i class="fa fa-bars"></i><span>Meni</span></a>
 							</div>
 						</div>
 					</div>
-					<!-- /NAV -->
 				</div>
 			</div>
 		</div>
-		<!-- /MAIN HEADER -->
-</header>
-<!-- /HEADER -->
+	</header>
 
-<!-- NAVIGATION -->
-<nav id="navigation">
-    <div class="container">
-        <div id="responsive-nav">
-            <ul class="main-nav nav navbar-nav"></ul>
-        </div>
-    </div>
-</nav>
-<!-- /NAVIGATION -->
-
-<!-- ============================================================
-     DOCUMENTS PAGE
-     ============================================================ -->
-<div class="documents-section">
-    <div class="container">
-
-        <!-- Page header -->
-        <div class="documents-page-header">
-            <h2><i class="fa fa-folder-open" style="color:#c8102e;margin-right:8px;"></i>Moji dokumenti</h2>
-            <p>Otpremite, pregledajte i preuzmite vaše dokumente.</p>
-        </div>
-
-        <!-- ── Upload card ───────────────────────────────────────── -->
-        <div class="doc-card">
-            <h3><i class="fa fa-upload"></i>Otpremi novi dokument</h3>
-
-            <!-- Upload alert -->
-            <div id="upload-alert" class="doc-alert" role="alert"></div>
-
-            <form id="upload-form" novalidate>
-
-                <!-- Drop zone -->
-                <div id="upload-zone" class="upload-zone" role="button" tabindex="0"
-                     aria-label="Kliknite ili prevucite fajl ovdje">
-                    <input type="file" id="upload-file-input" name="file"
-                           accept=".pdf,.doc,.docx,.json,.xml,.txt"
-                           aria-label="Izaberite fajl za otpremanje">
-                    <div class="upload-zone-icon">
-                        <i class="fa fa-cloud-upload"></i>
-                    </div>
-                    <div class="upload-zone-text">Kliknite ili prevucite fajl ovdje</div>
-                    <div class="upload-zone-hint">
-                        Podržani formati: <strong>PDF, DOC, DOCX, JSON, XML, TXT</strong>
-                    </div>
-                </div>
-
-                <!-- Selected file info -->
-                <div id="upload-selected-file" class="upload-selected-file" role="status">
-                    <i class="fa fa-file-text-o"></i>
-                    <span id="upload-selected-name" class="file-name"></span>
-                    <span id="upload-selected-size" class="file-size"></span>
-                    <button type="button" id="upload-clear-btn" class="upload-clear-btn"
-                            title="Ukloni odabrani fajl" aria-label="Ukloni odabrani fajl">
-                        <i class="fa fa-times"></i>
-                    </button>
-                </div>
-
-                <!-- Progress bar -->
-                <div id="upload-progress-wrap" class="upload-progress-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-                    <div id="upload-progress-label" class="upload-progress-label">Otpremanje...</div>
-                    <div class="progress">
-                        <div id="upload-progress-bar" class="progress-bar"></div>
-                    </div>
-                </div>
-
-                <!-- Submit -->
-                <div class="upload-actions">
-                    <button type="submit" id="upload-submit-btn" class="btn-primary-doc" disabled>
-                        <i class="fa fa-upload"></i> Otpremi dokument
-                    </button>
-                </div>
-
-            </form>
-        </div>
-        <!-- /Upload card -->
-
-        <!-- ── Sidebar + Documents layout ───────────────────────── -->
-        <div class="doc-layout">
-
-            <!-- Folder sidebar -->
-            <div class="doc-sidebar">
-                <div class="doc-sidebar-card">
-                    <div class="doc-sidebar-header">
-                        <span><i class="fa fa-folder" style="margin-right:5px;"></i>Folderi</span>
-                        <button class="doc-sidebar-new-btn" id="new-root-folder-btn"
-                                title="Novi folder" aria-label="Novi root folder">
-                            <i class="fa fa-plus"></i>
-                        </button>
-                    </div>
-                    <ul class="doc-folder-tree" id="folder-tree" role="tree">
-                        <li>
-                            <div class="doc-spinner" style="padding:20px 10px;">
-                                <i class="fa fa-spinner fa-spin"></i>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <!-- /Folder sidebar -->
-
-            <!-- Documents main -->
-            <div class="doc-main">
-                <div class="doc-card" style="margin-bottom:0;">
-                    <h3><i class="fa fa-list"></i>Lista dokumenata</h3>
-
-                    <!-- Active folder filter bar -->
-                    <div id="doc-filter-bar" class="doc-filter-bar" style="display:none;">
-                        <i class="fa fa-filter"></i>
-                        <span>Folder:</span>
-                        <span id="doc-filter-name" class="doc-filter-name"></span>
-                        <button class="doc-filter-clear" id="doc-filter-clear" title="Prikaži sve dokumente">
-                            <i class="fa fa-times"></i> Ukloni filter
-                        </button>
-                    </div>
-
-                    <div class="doc-table-wrap">
-                        <table class="doc-table" aria-label="Lista dokumenata">
-                            <thead>
-                                <tr>
-                                    <th>Naziv</th>
-                                    <th>Veličina</th>
-                                    <th>Datum</th>
-                                    <th>Akcije</th>
-                                </tr>
-                            </thead>
-                            <tbody id="doc-list-container">
-                                <tr>
-                                    <td colspan="4">
-                                        <div class="doc-spinner">
-                                            <i class="fa fa-spinner fa-spin"></i>
-                                            Učitavanje...
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Pagination -->
-                    <div id="doc-pagination" class="doc-pagination" role="navigation" aria-label="Stranice dokumenata"></div>
-                </div>
-            </div>
-            <!-- /Documents main -->
-
-        </div>
-        <!-- /Sidebar + Documents layout -->
-
-    </div>
-</div>
-<!-- /DOCUMENTS PAGE -->
-
-<!-- ============================================================
-     MODAL: Novi folder
-     ============================================================ -->
-<div id="modal-new-folder" class="doc-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-new-folder-title">
-    <div class="doc-modal">
-        <div class="doc-modal-header">
-            <i class="fa fa-folder-o" style="color:#1A5C2A;"></i>
-            <h4 id="modal-new-folder-title">Novi folder</h4>
-            <button class="doc-modal-close" data-modal-close="modal-new-folder" aria-label="Zatvori">&times;</button>
-        </div>
-        <div class="doc-modal-body">
-            <p id="new-folder-parent-label" class="doc-modal-hint">Root nivo</p>
-            <label for="new-folder-name">Naziv foldera</label>
-            <input type="text" id="new-folder-name" placeholder="npr. Ugovori" maxlength="255" />
-            <div id="new-folder-name-error" class="invalid-feedback">Naziv je obavezan.</div>
-        </div>
-        <div class="doc-modal-footer">
-            <button class="btn-secondary-doc" data-modal-close="modal-new-folder">Otkaži</button>
-            <button class="btn-primary-doc" id="new-folder-save-btn">
-                <i class="fa fa-check"></i> Kreiraj
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- ============================================================
-     MODAL: Preimenuj folder
-     ============================================================ -->
-<div id="modal-rename-folder" class="doc-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-rename-folder-title">
-    <div class="doc-modal">
-        <div class="doc-modal-header">
-            <i class="fa fa-pencil" style="color:#1A5C2A;"></i>
-            <h4 id="modal-rename-folder-title">Preimenuj folder</h4>
-            <button class="doc-modal-close" data-modal-close="modal-rename-folder" aria-label="Zatvori">&times;</button>
-        </div>
-        <div class="doc-modal-body">
-            <label for="rename-folder-name">Novi naziv</label>
-            <input type="text" id="rename-folder-name" placeholder="Naziv foldera" maxlength="255" />
-            <div id="rename-folder-name-error" class="invalid-feedback">Naziv je obavezan.</div>
-        </div>
-        <div class="doc-modal-footer">
-            <button class="btn-secondary-doc" data-modal-close="modal-rename-folder">Otkaži</button>
-            <button class="btn-primary-doc" id="rename-folder-save-btn">
-                <i class="fa fa-check"></i> Sačuvaj
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- ============================================================
-     MODAL: Obriši folder
-     ============================================================ -->
-<div id="modal-delete-folder" class="doc-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-delete-folder-title">
-    <div class="doc-modal">
-        <div class="doc-modal-header">
-            <i class="fa fa-trash" style="color:#c0392b;"></i>
-            <h4 id="modal-delete-folder-title">Obriši folder</h4>
-            <button class="doc-modal-close" data-modal-close="modal-delete-folder" aria-label="Zatvori">&times;</button>
-        </div>
-        <div class="doc-modal-body">
-            <p>Da li ste sigurni da želite obrisati folder <strong id="delete-folder-name-label"></strong>?</p>
-            <p class="doc-modal-hint">Svi podfolderi će biti obrisani. Dokumenti unutar foldera biće premješteni na root nivo.</p>
-        </div>
-        <div class="doc-modal-footer">
-            <button class="btn-secondary-doc" data-modal-close="modal-delete-folder">Otkaži</button>
-            <button class="btn-primary-doc" id="delete-folder-confirm-btn"
-                    style="background:#c0392b;">
-                <i class="fa fa-trash"></i> Obriši
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- ============================================================
-     MODAL: Premesti dokument
-     ============================================================ -->
-<div id="modal-move-doc" class="doc-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-move-doc-title">
-    <div class="doc-modal">
-        <div class="doc-modal-header">
-            <i class="fa fa-share" style="color:#1A5C2A;"></i>
-            <h4 id="modal-move-doc-title">Premesti dokument</h4>
-            <button class="doc-modal-close" data-modal-close="modal-move-doc" aria-label="Zatvori">&times;</button>
-        </div>
-        <div class="doc-modal-body">
-            <p>Premesti <strong id="move-doc-name-label"></strong> u:</p>
-            <label for="move-doc-folder-select">Odredišni folder</label>
-            <select id="move-doc-folder-select">
-                <option value="">— Root (bez foldera) —</option>
-            </select>
-        </div>
-        <div class="doc-modal-footer">
-            <button class="btn-secondary-doc" data-modal-close="modal-move-doc">Otkaži</button>
-            <button class="btn-primary-doc" id="move-doc-confirm-btn">
-                <i class="fa fa-check"></i> Premesti
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- ============================================================
-     PREVIEW MODAL
-     ============================================================ -->
-<div id="doc-preview-overlay" class="doc-preview-overlay"
-     role="dialog" aria-modal="true" aria-labelledby="preview-modal-title">
-    <div class="doc-preview-modal">
-
-        <!-- Modal header -->
-        <div class="doc-preview-header">
-            <i class="fa fa-file-text-o" style="color:#1A5C2A;font-size:18px;flex-shrink:0;"></i>
-            <h4 id="preview-modal-title">Pregled dokumenta</h4>
-            <button id="preview-download-btn" class="preview-download-btn" type="button">
-                <i class="fa fa-download"></i> Preuzmi original
-            </button>
-            <button id="preview-close-btn" class="doc-preview-close" type="button"
-                    aria-label="Zatvori pregled">&times;</button>
-        </div>
-
-        <!-- Modal body — content injected by JS -->
-        <div id="doc-preview-body" class="doc-preview-body">
-            <div class="doc-preview-loading">
-                <i class="fa fa-spinner fa-spin"></i>
-                Učitavanje pregleda...
-            </div>
-        </div>
-
-    </div>
-</div>
-<!-- /PREVIEW MODAL -->
-
-<!-- FOOTER -->
-<footer id="footer">
-	<!-- top footer -->
-	<div class="section">
+	<div class="page-hero landing-hero">
+		<nav id="navigation" class="page-hero-nav">
+			<div class="container">
+				<div id="responsive-nav">
+					<ul class="main-nav nav navbar-nav"></ul>
+				</div>
+			</div>
+		</nav>
 		<div class="container">
 			<div class="row">
-				<div class="col-md-4 col-xs-6">
-					<div class="footer">
-						<h3 class="footer-title">Optimus</h3>
-						<p>Sigurna platforma za čuvanje i upravljanje vašim dokumentima.</p>
+				<div class="col-md-7">
+					<span class="page-hero-badge"><i class="fa fa-folder-open"></i> Platforma za dokumente</span>
+					<h1>Sva dokumenta na <span>jednom mestu</span></h1>
+					<p class="landing-lead">Otpremite fajlove, složite ih u foldere, pregledajte sadržaj i preuzmite original — bez instalacije i bez deljenja naloga.</p>
+					<div class="landing-actions">
+						<a href="login.html" id="landing-login-btn" class="landing-btn landing-btn-primary">
+							<i class="fa fa-sign-in"></i> Prijavi se
+						</a>
+						<a href="documents.html" class="landing-btn landing-btn-ghost">
+							<i class="fa fa-folder-o"></i> Otvori dokumente
+						</a>
 					</div>
+					<p class="landing-auth-note" id="landing-auth-note">
+						Nemate nalog? <a href="register.html">Registrujte se</a>
+					</p>
 				</div>
-
-				<div class="col-md-4 col-xs-6">
-					<div class="footer">
-						<h3 class="footer-title">Navigacija</h3>
-						<ul class="footer-links">
-							<li><a href="index.html">Dokumenti</a></li>
-							<li><a href="about.html">O nama</a></li>
-							<li><a href="contact.html">Kontakt</a></li>
-							<li><a href="help.html">Pomoć</a></li>
-						</ul>
-					</div>
-				</div>
-
-				<div class="col-md-4 col-xs-6">
-					<div class="footer">
-						<h3 class="footer-title">Nalog</h3>
-						<ul class="footer-links">
-							<li><a href="login.html">Prijava</a></li>
-							<li><a href="register.html">Registracija</a></li>
-							<li><a href="account.html">Moj nalog</a></li>
-							<li><a href="privacy-policy.html">Politika privatnosti</a></li>
-							<li><a href="terms-and-conditions.html">Uslovi korišćenja</a></li>
-						</ul>
+				<div class="col-md-5">
+					<div class="landing-panel">
+						<div class="landing-panel-item">
+							<i class="fa fa-cloud-upload"></i>
+							<div>
+								<strong>Otpremanje prevlačenjem</strong>
+								<span>PDF, Word, JSON, XML i običan tekst.</span>
+							</div>
+						</div>
+						<div class="landing-panel-item">
+							<i class="fa fa-sitemap"></i>
+							<div>
+								<strong>Folderi i podfolderi</strong>
+								<span>Dokument se kasnije može premestiti.</span>
+							</div>
+						</div>
+						<div class="landing-panel-item">
+							<i class="fa fa-eye"></i>
+							<div>
+								<strong>Pregled u pregledaču</strong>
+								<span>PDF i tekstualni fajlovi, pre preuzimanja.</span>
+							</div>
+						</div>
+						<div class="landing-panel-item">
+							<i class="fa fa-search"></i>
+							<div>
+								<strong>Pretraga po nazivu</strong>
+								<span>Rezultati idu kroz sve foldere odjednom.</span>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- /top footer -->
 
-	<!-- bottom footer -->
-	<div id="bottom-footer" class="section">
+	<div class="landing-facts">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-12 text-center">
-					<span class="copyright">© 2026 Optimus. Sva prava zadržana.</span>
+				<div class="col-md-3 col-sm-6">
+					<div class="landing-fact">
+						<i class="fa fa-file-text-o"></i>
+						<strong>6 formata</strong>
+						<span>PDF, DOC, DOCX, JSON, XML, TXT</span>
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-6">
+					<div class="landing-fact">
+						<i class="fa fa-lock"></i>
+						<strong>Vaš nalog</strong>
+						<span>Dokumenti ostaju privatni</span>
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-6">
+					<div class="landing-fact">
+						<i class="fa fa-folder"></i>
+						<strong>Folderi</strong>
+						<span>Stablo sa podfolderima</span>
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-6">
+					<div class="landing-fact">
+						<i class="fa fa-download"></i>
+						<strong>Original</strong>
+						<span>Preuzimanje u jednom kliku</span>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- /bottom footer -->
-</footer>
-<!-- /FOOTER -->
 
-<!-- jQuery Plugins -->
+	<div class="landing-section">
+		<div class="container">
+			<div class="landing-heading">
+				<h2>Šta možete da radite</h2>
+				<div class="heading-line"></div>
+				<p>Alat je namenjen čuvanju i sređivanju dokumenata, ne javnoj galeriji fajlova.</p>
+			</div>
+			<div class="row">
+				<div class="col-md-4 col-sm-6">
+					<div class="feature-box">
+						<div class="feature-icon"><i class="fa fa-upload"></i></div>
+						<h3>Otpremanje</h3>
+						<p>Izaberite fajl ili ga prevucite u zonu za otpremanje. Napredak se vidi dok se fajl šalje.</p>
+					</div>
+				</div>
+				<div class="col-md-4 col-sm-6">
+					<div class="feature-box">
+						<div class="feature-icon"><i class="fa fa-folder-open"></i></div>
+						<h3>Organizacija</h3>
+						<p>Napravite folder, preimenujte ga ili obrišite. Dokumenti iz obrisanog foldera ostaju na vrhu.</p>
+					</div>
+				</div>
+				<div class="col-md-4 col-sm-6">
+					<div class="feature-box">
+						<div class="feature-icon"><i class="fa fa-exchange"></i></div>
+						<h3>Premeštanje</h3>
+						<p>Dokument možete premestiti u drugi folder ili vratiti na koren, bez ponovnog otpremanja.</p>
+					</div>
+				</div>
+				<div class="col-md-4 col-sm-6">
+					<div class="feature-box">
+						<div class="feature-icon"><i class="fa fa-file-pdf-o"></i></div>
+						<h3>Pregled</h3>
+						<p>PDF, JSON, XML i tekst otvaraju se u prozoru. Word fajlovi se preuzimaju kao original.</p>
+					</div>
+				</div>
+				<div class="col-md-4 col-sm-6">
+					<div class="feature-box">
+						<div class="feature-icon"><i class="fa fa-filter"></i></div>
+						<h3>Filter po folderu</h3>
+						<p>Klik na folder sužava listu. Pretraga po nazivu privremeno gleda sve dokumente.</p>
+					</div>
+				</div>
+				<div class="col-md-4 col-sm-6">
+					<div class="feature-box">
+						<div class="feature-icon"><i class="fa fa-user"></i></div>
+						<h3>Nalog</h3>
+						<p>Prijava, registracija i potvrda emaila. Odjava vas vraća na ovu početnu stranu.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="landing-section landing-section-alt">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-5">
+					<div class="landing-heading" style="text-align:left;">
+						<h2>Kako se kreće</h2>
+						<div class="heading-line" style="margin-left:0;"></div>
+						<p style="margin-left:0;">Tri koraka od praznog naloga do sređene liste.</p>
+					</div>
+				</div>
+				<div class="col-md-7">
+					<div class="row">
+						<div class="col-sm-4">
+							<div class="landing-step">
+								<div class="landing-step-num">1</div>
+								<h3>Nalog</h3>
+								<p>Registrujte se i prijavite. Dokumenti traže prijavu.</p>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="landing-step">
+								<div class="landing-step-num">2</div>
+								<h3>Otprema</h3>
+								<p>Dodajte fajl u koren ili u folder koji ste napravili.</p>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="landing-step">
+								<div class="landing-step-num">3</div>
+								<h3>Pregled</h3>
+								<p>Otvorite listu, pretražite naziv ili preuzmite original.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row" style="margin-top:36px;">
+				<div class="col-md-12">
+					<div class="landing-note">
+						<i class="fa fa-info-circle"></i>
+						<div>
+							<h3>Početna je javna</h3>
+							<p>Ovu stranu možete da čitate bez prijave. Lista dokumenata, otpremanje i folderi ostaju iza naloga.</p>
+						</div>
+					</div>
+					<div class="landing-note">
+						<i class="fa fa-files-o"></i>
+						<div>
+							<h3>Šta se vidi u pregledu</h3>
+							<p>PDF se otvara u pregledaču. JSON, XML i TXT prikazuju se kao tekst. DOC i DOCX ostaju za preuzimanje.</p>
+						</div>
+					</div>
+					<div class="landing-note">
+						<i class="fa fa-trash-o"></i>
+						<div>
+							<h3>Brisanje foldera ne briše fajlove</h3>
+							<p>Podfolderi nestaju, a dokumenti iz tog foldera prelaze na koren da ostanu dostupni.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="cta-strip">
+		<div class="container">
+			<h3>Spremni da otvorite svoja dokumenta?</h3>
+			<p>Prijavite se ako već imate nalog, ili idite pravo na listu dokumenata.</p>
+			<a href="login.html" class="btn-cta" id="landing-cta-login"><i class="fa fa-sign-in"></i> Prijavi se</a>
+			<a href="documents.html" class="btn-cta-outline"><i class="fa fa-folder-o"></i> Dokumenti</a>
+		</div>
+	</div>
+
+	<footer id="footer">
+		<div class="container">
+			<div class="app-footer">
+				<a href="index.html" class="app-footer-brand" aria-label="FirstCode, početna">
+					<img src="./img/logo.svg" alt="FirstCode">
+				</a>
+				<nav class="app-footer-nav" aria-label="Podnožje">
+					<a href="documents.html">Dokumenti</a>
+					<a href="about.html">O nama</a>
+					<a href="help.html">Pomoć</a>
+					<a href="contact.html">Kontakt</a>
+					<a href="account.html" class="footer-account-link">Moj nalog</a>
+				</nav>
+			</div>
+			<div class="app-footer-meta">
+				<span class="copyright">© 2026 FirstCode</span>
+				<span class="app-footer-note">Platforma za čuvanje i upravljanje dokumentima</span>
+			</div>
+		</div>
+	</footer>
 
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
@@ -439,8 +310,6 @@
 	<script src="js/auth.js"></script>
 	<script src="js/main.js"></script>
 	<script src="js/main-nav.js"></script>
-	<script src="js/documents.js"></script>
-
-
+	<script src="js/landing.js"></script>
 </body>
 </html>

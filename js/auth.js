@@ -12,7 +12,13 @@
     var KEYS = {
         ACCESS_TOKEN:  'optimus_access_token',
         REFRESH_TOKEN: 'optimus_refresh_token',
-        USER:          'optimus_user'           // { id, email, firstName, lastName }
+        USER:          'optimus_user'           // { id, email, firstName, lastName, role }
+    };
+
+    var ROLES = {
+        ADMIN:    'ADMIN',
+        CUSTOMER: 'CUSTOMER',
+        VIEWER:   'VIEWER'
     };
 
     // ─── Token helpers ────────────────────────────────────────────────────────
@@ -282,9 +288,63 @@
                     reject(_extractError(xhr));
                 });
             });
-        }).catch(function () {
+        }, function () {
+            // Token refresh failed — session is gone. API errors (400/403/500) are
+            // not handled here so callers can show them.
             window.location.href = '/login.html';
+            return new Promise(function () {});
         });
+    }
+
+    // ─── Roles ────────────────────────────────────────────────────────────────
+    // UI-only convenience checks; the backend enforces the real permissions.
+
+    /**
+     * Returns the current user's role. Users stored before roles were exposed
+     * (or with an unknown value) are treated as VIEWER — the least-privileged role.
+     */
+    function getRole() {
+        var user = getUser();
+        var role = user && user.role;
+        return ROLES.hasOwnProperty(role) ? role : ROLES.VIEWER;
+    }
+
+    function hasRole() {
+        var role = getRole();
+        for (var i = 0; i < arguments.length; i++) {
+            if (arguments[i] === role) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Re-fetches the profile and merges it into the stored user, so a role changed
+     * by an admin (or missing from an older login) is picked up without re-login.
+     * Resolves with the updated user.
+     */
+    function refreshUser() {
+        return authFetch('/api/account/me').then(function (profile) {
+            if (!profile) return getUser();
+            var user = Object.assign({}, getUser() || {}, {
+                id:        profile.id,
+                email:     profile.email,
+                firstName: profile.firstName,
+                lastName:  profile.lastName,
+                role:      profile.role
+            });
+            setUser(user);
+            return user;
+        });
+    }
+
+    /** Upload, move, create/rename folders. */
+    function canWrite() {
+        return hasRole(ROLES.ADMIN, ROLES.CUSTOMER);
+    }
+
+    /** Delete documents and folders. */
+    function canDelete() {
+        return hasRole(ROLES.ADMIN);
     }
 
     // ─── Guard helper ─────────────────────────────────────────────────────────
@@ -331,7 +391,13 @@
         verifyEmail:        verifyEmail,
         resendVerification: resendVerification,
         authFetch:          authFetch,
-        requireAuth:        requireAuth
+        requireAuth:        requireAuth,
+        ROLES:              ROLES,
+        getRole:            getRole,
+        refreshUser:        refreshUser,
+        hasRole:            hasRole,
+        canWrite:           canWrite,
+        canDelete:          canDelete
     };
 
 })(window);

@@ -13,12 +13,22 @@
         }
 
         var navHtml =
-            navItem('index.html',   'Dokumenti') +
-            navItem('about.html',   'O nama')    +
-            navItem('contact.html', 'Kontakt')   +
-            navItem('help.html',    'Pomoć');
+            navItem('index.html',      'Početna')   +
+            navItem('documents.html',  'Dokumenti') +
+            navItem('about.html',      'O nama')    +
+            navItem('contact.html',    'Kontakt')   +
+            navItem('help.html',       'Pomoć');
+
+        if (isAdmin()) {
+            navHtml += navItem('admin-users.html', 'Korisnici');
+        }
 
         $('.main-nav').html(navHtml);
+    }
+
+    function isAdmin() {
+        var auth = window.AuthService;
+        return !!auth && auth.isLoggedIn() && auth.hasRole(auth.ROLES.ADMIN);
     }
 
     $(document).ready(function () {

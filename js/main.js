@@ -16,9 +16,7 @@ function formatPrice(val) {
         if (!$link.length) return;
 
         // Update all static footer "Moj nalog" links based on login state
-        var $footerAccountLinks = $('footer a[href="account.html"], footer a[href="login.html"]').filter(function () {
-            return $(this).text().trim() === 'Moj nalog';
-        });
+        var $footerAccountLinks = $('footer a.footer-account-link');
 
         if (typeof window.AuthService === 'undefined' || !window.AuthService.isLoggedIn()) {
             // Not logged in — link to login page (already set as default href)
@@ -37,7 +35,7 @@ function formatPrice(val) {
         var lastName = user && user.lastName ? user.lastName : '';
         var displayName = lastName ? firstName + ' ' + lastName : firstName;
         $link.attr('href', 'account.html');
-        $label.html(displayName + ' <span style="color:#ccc;font-size:11px;">&#9660;</span>');
+        $label.html(displayName + ' <span class="auth-caret">&#9660;</span>');
 
         // Wrap in a mini-dropdown if not already done
         if (!$link.hasClass('auth-dropdown-init')) {
@@ -49,20 +47,12 @@ function formatPrice(val) {
                 $anchor.css('position', 'relative');
             }
 
+            var isAdmin = window.AuthService.hasRole(window.AuthService.ROLES.ADMIN);
             var $dropdown = $([
-                '<ul class="auth-user-dropdown" style="',
-                '  display:none;position:absolute;right:0;top:100%;',
-                '  background:#0A0A0A;min-width:160px;z-index:9999;',
-                '  border-radius:0 0 4px 4px;list-style:none;margin:0;padding:4px 0;',
-                '  box-shadow:0 4px 12px rgba(0,0,0,0.2);">',
-                '  <li><a href="account.html" style="display:block;padding:9px 16px;color:#fff;font-size:13px;text-decoration:none;white-space:nowrap;">',
-                '    <i class="fa fa-user" style="margin-right:7px;"></i>Moj profil',
-                '  </a></li>',
-                '  <li style="border-top:1px solid rgba(255,255,255,0.15);margin-top:4px;padding-top:4px;">',
-                '    <a href="#" id="nav-logout-btn" style="display:block;padding:9px 16px;color:#ff9999;font-size:13px;text-decoration:none;white-space:nowrap;">',
-                '      <i class="fa fa-sign-out" style="margin-right:7px;"></i>Odjavi se',
-                '    </a>',
-                '  </li>',
+                '<ul class="auth-user-dropdown">',
+                '  <li><a href="account.html"><i class="fa fa-user"></i>Moj profil</a></li>',
+                isAdmin ? '  <li><a href="admin-users.html"><i class="fa fa-users"></i>Korisnici</a></li>' : '',
+                '  <li><a href="#" id="nav-logout-btn"><i class="fa fa-sign-out"></i>Odjavi se</a></li>',
                 '</ul>'
             ].join(''));
 
