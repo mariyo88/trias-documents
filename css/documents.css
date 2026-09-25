@@ -1331,9 +1331,11 @@
 @media (max-width: 767px) {
     .doc-layout {
         flex-direction: column;
+        align-items: stretch;
         gap: 14px;
     }
-    .doc-sidebar { width: 100%; }
+    .doc-sidebar,
+    .doc-main { width: 100%; }
     .doc-sidebar-card {
         margin-bottom: 0;
         border-radius: 10px;
