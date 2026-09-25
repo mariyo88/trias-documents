@@ -248,6 +248,9 @@
 .doc-table-wrap {
     overflow-x: auto;
 }
+.doc-table-wrap.has-open-menu {
+    overflow: visible;
+}
 .doc-table {
     width: 100%;
     border-collapse: collapse;
@@ -334,6 +337,77 @@
     display: flex;
     gap: 6px;
     flex-wrap: nowrap;
+    align-items: center;
+    position: relative;
+}
+
+/* Overflow menu (Premesti / Obriši) */
+.doc-actions-more {
+    position: relative;
+    flex: 0 0 auto;
+}
+.doc-actions-more .btn-more-doc {
+    min-width: 36px;
+    justify-content: center;
+    padding: 6px 10px;
+}
+.doc-actions-more .btn-more-doc .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+.doc-actions-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    z-index: 40;
+    min-width: 160px;
+    padding: 6px;
+    background: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+}
+.doc-actions-more.is-open .doc-actions-menu {
+    display: flex;
+}
+.doc-actions-menu[hidden] {
+    display: none !important;
+}
+.doc-actions-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 9px 12px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #555;
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+}
+.doc-actions-menu-item:hover {
+    background: #F4F4F4;
+    color: #C8102E;
+}
+.doc-actions-menu-item.btn-delete-doc:hover {
+    background: #fff5f5;
+    color: #c0392b;
+}
+.doc-actions-menu-item i {
+    width: 14px;
+    text-align: center;
 }
 
 /* ── Empty state ─────────────────────────────────────────── */
@@ -743,6 +817,13 @@
         margin-top: 4px;
         padding-top: 10px;
         border-top: 1px solid #F0F0F0;
+        overflow: visible;
+        position: relative;
+        z-index: 1;
+    }
+    .doc-table tr:has(.doc-actions-more.is-open) {
+        z-index: 5;
+        position: relative;
     }
 
     .doc-name-cell {
@@ -772,8 +853,9 @@
         display: flex;
         gap: 8px;
         width: 100%;
+        align-items: stretch;
     }
-    .doc-actions .btn-icon-doc {
+    .doc-actions > .btn-icon-doc {
         flex: 1;
         justify-content: center;
         min-height: 44px;
@@ -783,6 +865,23 @@
         background: #F4F4F4;
         border-color: #E0E0E0;
     }
+    .doc-actions-more {
+        flex: 0 0 auto;
+    }
+    .doc-actions-more .btn-more-doc {
+        flex: none;
+        min-width: 44px;
+        min-height: 44px;
+        padding: 10px 12px;
+        border-radius: 6px;
+        background: #F4F4F4;
+        border-color: #E0E0E0;
+    }
+    .doc-actions-menu {
+        right: 0;
+        left: auto;
+        min-width: 180px;
+    }
     .doc-actions .btn-icon-doc span {
         display: inline;
     }
@@ -790,10 +889,10 @@
         font-size: 14px;
     }
 
-    /* Very narrow phones — icon-only actions to avoid crowding */
+    /* Very narrow phones — icon-only primary actions */
     @media (max-width: 360px) {
-        .doc-actions .btn-icon-doc span { display: none; }
-        .doc-actions .btn-icon-doc { min-width: 44px; }
+        .doc-actions > .btn-icon-doc span { display: none; }
+        .doc-actions > .btn-icon-doc { min-width: 44px; }
     }
 
     .doc-empty-state {

@@ -78,6 +78,7 @@
         bindModalClose();
         bindPreviewModal();
         bindFilterClear();
+        bindDocActionMenus();
 
         if (perms.write) {
             bindUploadZone();
@@ -159,10 +160,28 @@
         // Close on Escape
         $(document).on('keydown.modals', function (e) {
             if (e.key === 'Escape') {
+                closeAllDocActionMenus();
                 $('.doc-modal-overlay.open').each(function () {
                     closeModal($(this).attr('id'));
                 });
             }
+        });
+    }
+
+    function closeAllDocActionMenus() {
+        $('.doc-actions-more.is-open')
+            .removeClass('is-open')
+            .find('.btn-more-doc').attr('aria-expanded', 'false').end()
+            .find('.doc-actions-menu').prop('hidden', true);
+        $('.doc-table-wrap').removeClass('has-open-menu');
+    }
+
+    function bindDocActionMenus() {
+        $(document).on('click.docmenus', function () {
+            closeAllDocActionMenus();
+        });
+        $(document).on('click.docmenus', '.doc-actions-more', function (e) {
+            e.stopPropagation();
         });
     }
 
@@ -854,17 +873,34 @@
             var mime     = escAttr(doc.contentType || '');
 
             var previewBtn = isWordType(doc.contentType, doc.fileName) ? '' :
-                '<button class="btn-icon-doc btn-preview-doc" data-id="' + id + '" ' +
+                '<button type="button" class="btn-icon-doc btn-preview-doc" data-id="' + id + '" ' +
                 'data-name="' + name + '" data-type="' + mime + '" title="Pregled">' +
                 '<i class="fa fa-eye"></i><span>Pregled</span></button>';
 
-            var moveBtn = !perms.write ? '' :
-                '<button class="btn-icon-doc btn-move-doc" data-id="' + id + '" data-name="' + name + '" title="Premesti u folder">' +
-                '<i class="fa fa-share"></i><span>Premesti</span></button>';
+            var menuItems = '';
+            if (perms.write) {
+                menuItems +=
+                    '<button type="button" class="doc-actions-menu-item btn-move-doc" role="menuitem" ' +
+                    'data-id="' + id + '" data-name="' + name + '">' +
+                    '<i class="fa fa-share"></i><span>Premesti</span></button>';
+            }
+            if (perms.delete) {
+                menuItems +=
+                    '<button type="button" class="doc-actions-menu-item btn-delete-doc" role="menuitem" ' +
+                    'data-id="' + id + '" data-name="' + name + '">' +
+                    '<i class="fa fa-trash"></i><span>Obriši</span></button>';
+            }
 
-            var deleteBtn = !perms.delete ? '' :
-                '<button class="btn-icon-doc btn-delete-doc" data-id="' + id + '" data-name="' + name + '" title="Obriši">' +
-                '<i class="fa fa-trash"></i><span>Obriši</span></button>';
+            var moreMenu = !menuItems ? '' :
+                '<div class="doc-actions-more">' +
+                '  <button type="button" class="btn-icon-doc btn-more-doc" title="Više opcija" ' +
+                'aria-haspopup="true" aria-expanded="false">' +
+                '    <i class="fa fa-ellipsis-v"></i><span class="sr-only">Više</span>' +
+                '  </button>' +
+                '  <div class="doc-actions-menu" role="menu" hidden>' +
+                menuItems +
+                '  </div>' +
+                '</div>';
 
             return [
                 '<tr>',
@@ -882,11 +918,10 @@
                 '<td>',
                 '  <div class="doc-actions">',
                 previewBtn,
-                '  <button class="btn-icon-doc btn-download-doc" data-id="' + id + '" data-name="' + name + '" title="Preuzmi">',
+                '  <button type="button" class="btn-icon-doc btn-download-doc" data-id="' + id + '" data-name="' + name + '" title="Preuzmi">',
                 '    <i class="fa fa-download"></i><span>Preuzmi</span>',
                 '  </button>',
-                moveBtn,
-                deleteBtn,
+                moreMenu,
                 '  </div>',
                 '</td>',
                 '</tr>'
@@ -904,10 +939,24 @@
             .on('click.docactions', '.btn-download-doc', function () {
                 downloadDocument($(this).data('id'), $(this).data('name'));
             })
+            .on('click.docactions', '.btn-more-doc', function (e) {
+                e.stopPropagation();
+                var $wrap = $(this).closest('.doc-actions-more');
+                var wasOpen = $wrap.hasClass('is-open');
+                closeAllDocActionMenus();
+                if (!wasOpen) {
+                    $wrap.addClass('is-open');
+                    $wrap.find('.doc-actions-menu').prop('hidden', false);
+                    $(this).attr('aria-expanded', 'true');
+                    $wrap.closest('.doc-table-wrap').addClass('has-open-menu');
+                }
+            })
             .on('click.docactions', '.btn-move-doc', function () {
+                closeAllDocActionMenus();
                 if (perms.write) openMoveDocModal($(this).data('id'), $(this).data('name'));
             })
             .on('click.docactions', '.btn-delete-doc', function () {
+                closeAllDocActionMenus();
                 if (perms.delete) openDeleteDocModal($(this).data('id'), $(this).data('name'));
             });
     }
