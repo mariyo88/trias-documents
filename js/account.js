@@ -80,11 +80,11 @@
 				method: 'PUT',
 				data: JSON.stringify({ currentPassword: curr, newPassword: newPass })
 			}).then(function () {
-				$btn.prop('disabled', false).html('<i class="fa fa-save"></i> Promijeni lozinku');
+				$btn.prop('disabled', false).html('<i class="fa fa-save"></i> Promeni lozinku');
 				$('#password-form')[0].reset();
 				showPanelAlert('password', 'Lozinka je uspješno promenjena.', 'success');
 			}).catch(function (err) {
-				$btn.prop('disabled', false).html('<i class="fa fa-save"></i> Promijeni lozinku');
+				$btn.prop('disabled', false).html('<i class="fa fa-save"></i> Promeni lozinku');
 				showPanelAlert('password', err.message || 'Greška pri promeni lozinke.', 'error');
 			});
 		});
