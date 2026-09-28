@@ -16,7 +16,7 @@ Korisnici se prijavljuju, otpremaju fajlove u foldere, pregledaju ih u pregleda�
 | Google Fonts | Montserrat | Tipografija |
 | PDF.js | 3.11.174 | Pregled PDF-a na mobilnim pregleda훾ima (CDN) |
 
-Podr탑ani formati: PDF, DOC, DOCX, JSON, XML, TXT. PDF i tekst (JSON, XML, TXT) imaju pregled u pregleda훾u. Word fajlovi se preuzimaju kao original.
+Podr탑ani formati: PDF, DOC, DOCX, JSON, XML, TXT, JPG/JPEG, PNG, GIF, WEBP. PDF, tekst (JSON, XML, TXT) i slike imaju pregled u pregleda훾u. Word fajlovi se preuzimaju kao original.
 
 ---
 

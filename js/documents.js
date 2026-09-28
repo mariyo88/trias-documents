@@ -35,10 +35,18 @@
         'application/json': { ext: 'json', label: 'JSON', cssClass: 'type-json' },
         'application/xml':  { ext: 'xml',  label: 'XML',  cssClass: 'type-xml'  },
         'text/xml':         { ext: 'xml',  label: 'XML',  cssClass: 'type-xml'  },
-        'text/plain':       { ext: 'txt',  label: 'TXT',  cssClass: 'type-txt'  }
+        'text/plain':       { ext: 'txt',  label: 'TXT',  cssClass: 'type-txt'  },
+        'image/jpeg':       { ext: 'jpg',  label: 'JPG',  cssClass: 'type-img'  },
+        'image/png':        { ext: 'png',  label: 'PNG',  cssClass: 'type-img'  },
+        'image/gif':        { ext: 'gif',  label: 'GIF',  cssClass: 'type-img'  },
+        'image/webp':       { ext: 'webp', label: 'WEBP', cssClass: 'type-img' }
     };
 
     var TEXT_PREVIEW_TYPES = ['application/json', 'application/xml', 'text/xml', 'text/plain'];
+    var IMAGE_PREVIEW_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    var SUPPORTED_EXTENSIONS = ['pdf', 'doc', 'docx', 'json', 'xml', 'txt', 'jpg', 'jpeg', 'png', 'gif', 'webp'];
+    /** Client-side size check aligned with backend default (20 MB). */
+    var MAX_UPLOAD_BYTES = 20 * 1024 * 1024;
     var PAGE_SIZE = 10;
 
     // ── State ──────────────────────────────────────────────────────────────
@@ -760,7 +768,11 @@
         var $label    = $('#upload-progress-label');
 
         if (!isSupportedType(file)) {
-            showUploadAlert('Nepodržan format fajla. Dozvoljeni: PDF, DOC, DOCX, JSON, XML, TXT.', 'error');
+            showUploadAlert('Nepodržan format fajla. Dozvoljeni: PDF, DOC, DOCX, JSON, XML, TXT, JPG, PNG, GIF, WEBP.', 'error');
+            return;
+        }
+        if (file.size > MAX_UPLOAD_BYTES) {
+            showUploadAlert('Fajl je prevelik. Maksimalna veličina je 20 MB.', 'error');
             return;
         }
 
@@ -1110,9 +1122,44 @@
             loadIframePreview($body, id, fileName);
         } else if (TEXT_PREVIEW_TYPES.indexOf(mimeType) !== -1) {
             loadTextPreview($body, id);
+        } else if (IMAGE_PREVIEW_TYPES.indexOf(mimeType) !== -1) {
+            loadImagePreview($body, id, fileName);
         } else {
             $body.html('<div class="doc-preview-error"><i class="fa fa-ban"></i>' +
                 '<p>Pregled nije dostupan za ovaj tip fajla.</p></div>');
+        }
+    }
+
+    function loadImagePreview($body, id, fileName) {
+        AuthService.getValidAuthHeader().then(function (headers) {
+            return fetch(API_BASE + '/api/documents/' + encodeURIComponent(id) + '/preview', {
+                method: 'GET', headers: headers
+            });
+        }).then(function (r) {
+            if (!r.ok) return Promise.reject(new Error('HTTP ' + r.status));
+            return r.blob();
+        }).then(function (blob) {
+            var url = URL.createObjectURL(blob);
+            var $img = $('<img>')
+                .addClass('doc-preview-image')
+                .attr('src', url)
+                .attr('alt', fileName || 'Pregled slike');
+            $body.empty().append(
+                $('<div>').addClass('doc-preview-image-wrap').append($img)
+            );
+            $body.data('imageObjectUrl', url);
+        }).catch(function (err) {
+            revokeImagePreviewUrl($body);
+            $body.html('<div class="doc-preview-error"><i class="fa fa-exclamation-circle"></i>' +
+                '<p>' + escHtml(err.message || 'Nije moguće učitati pregled.') + '</p></div>');
+        });
+    }
+
+    function revokeImagePreviewUrl($body) {
+        var url = $body.data('imageObjectUrl');
+        if (url) {
+            URL.revokeObjectURL(url);
+            $body.removeData('imageObjectUrl');
         }
     }
 
@@ -1152,6 +1199,7 @@
     function closePreview() {
         var $body = $('#doc-preview-body');
         PdfPreview.cleanup($body);
+        revokeImagePreviewUrl($body);
         $('#doc-preview-overlay').removeClass('open');
         $body.html('');
     }
@@ -1199,8 +1247,10 @@
 
     function isSupportedType(file) {
         if (SUPPORTED_TYPES[file.type]) return true;
+        // Some browsers report image/jpg
+        if (file.type === 'image/jpg') return true;
         var ext = getExtension(file.name).toLowerCase();
-        return ['pdf', 'doc', 'docx', 'json', 'xml', 'txt'].indexOf(ext) !== -1;
+        return SUPPORTED_EXTENSIONS.indexOf(ext) !== -1;
     }
 
     function isWordType(mimeType, fileName) {
@@ -1211,6 +1261,7 @@
     }
 
     function getTypeInfo(mimeType, fileName) {
+        if (mimeType === 'image/jpg') mimeType = 'image/jpeg';
         if (SUPPORTED_TYPES[mimeType]) return SUPPORTED_TYPES[mimeType];
         var ext = getExtension(fileName || '').toLowerCase();
         var byExt = {
@@ -1219,7 +1270,12 @@
             docx: { ext: 'docx', label: 'DOCX', cssClass: 'type-docx' },
             json: { ext: 'json', label: 'JSON', cssClass: 'type-json' },
             xml:  { ext: 'xml',  label: 'XML',  cssClass: 'type-xml'  },
-            txt:  { ext: 'txt',  label: 'TXT',  cssClass: 'type-txt'  }
+            txt:  { ext: 'txt',  label: 'TXT',  cssClass: 'type-txt'  },
+            jpg:  { ext: 'jpg',  label: 'JPG',  cssClass: 'type-img'  },
+            jpeg: { ext: 'jpeg', label: 'JPG',  cssClass: 'type-img'  },
+            png:  { ext: 'png',  label: 'PNG',  cssClass: 'type-img'  },
+            gif:  { ext: 'gif',  label: 'GIF',  cssClass: 'type-img'  },
+            webp: { ext: 'webp', label: 'WEBP', cssClass: 'type-img'  }
         };
         return byExt[ext] || { ext: ext || '?', label: (ext || '?').toUpperCase(), cssClass: 'type-other' };
     }

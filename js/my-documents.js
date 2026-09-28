@@ -4,6 +4,7 @@
 	var PAGE_SIZE = 10;
 	var API_BASE = window.APP_CONFIG.API_BASE;
 	var TEXT_PREVIEW_TYPES = ['application/json', 'application/xml', 'text/xml', 'text/plain'];
+	var IMAGE_PREVIEW_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 	var TYPE_BY_MIME = {
 		'application/pdf': { label: 'PDF', cssClass: 'type-pdf' },
 		'application/msword': { label: 'DOC', cssClass: 'type-doc' },
@@ -11,7 +12,11 @@
 		'application/json': { label: 'JSON', cssClass: 'type-json' },
 		'application/xml': { label: 'XML', cssClass: 'type-xml' },
 		'text/xml': { label: 'XML', cssClass: 'type-xml' },
-		'text/plain': { label: 'TXT', cssClass: 'type-txt' }
+		'text/plain': { label: 'TXT', cssClass: 'type-txt' },
+		'image/jpeg': { label: 'JPG', cssClass: 'type-img' },
+		'image/png': { label: 'PNG', cssClass: 'type-img' },
+		'image/gif': { label: 'GIF', cssClass: 'type-img' },
+		'image/webp': { label: 'WEBP', cssClass: 'type-img' }
 	};
 	var TYPE_BY_EXT = {
 		pdf: { label: 'PDF', cssClass: 'type-pdf' },
@@ -19,7 +24,12 @@
 		docx: { label: 'DOCX', cssClass: 'type-docx' },
 		json: { label: 'JSON', cssClass: 'type-json' },
 		xml: { label: 'XML', cssClass: 'type-xml' },
-		txt: { label: 'TXT', cssClass: 'type-txt' }
+		txt: { label: 'TXT', cssClass: 'type-txt' },
+		jpg: { label: 'JPG', cssClass: 'type-img' },
+		jpeg: { label: 'JPG', cssClass: 'type-img' },
+		png: { label: 'PNG', cssClass: 'type-img' },
+		gif: { label: 'GIF', cssClass: 'type-img' },
+		webp: { label: 'WEBP', cssClass: 'type-img' }
 	};
 	var currentPage = 0;
 	var currentSearch = '';
@@ -283,9 +293,44 @@
 			loadIframePreview($body, id, fileName);
 		} else if (TEXT_PREVIEW_TYPES.indexOf(mimeType) !== -1) {
 			loadTextPreview($body, id);
+		} else if (IMAGE_PREVIEW_TYPES.indexOf(mimeType) !== -1) {
+			loadImagePreview($body, id, fileName);
 		} else {
 			$body.html('<div class="doc-preview-error"><i class="fa fa-ban"></i>' +
 				'<p>Pregled nije dostupan za ovaj tip fajla.</p></div>');
+		}
+	}
+
+	function loadImagePreview($body, id, fileName) {
+		AuthService.getValidAuthHeader().then(function (headers) {
+			return fetch(API_BASE + '/api/documents/' + encodeURIComponent(id) + '/preview', {
+				method: 'GET', headers: headers
+			});
+		}).then(function (r) {
+			if (!r.ok) return Promise.reject(new Error('HTTP ' + r.status));
+			return r.blob();
+		}).then(function (blob) {
+			var url = URL.createObjectURL(blob);
+			var $img = $('<img>')
+				.addClass('doc-preview-image')
+				.attr('src', url)
+				.attr('alt', fileName || 'Pregled slike');
+			$body.empty().append(
+				$('<div>').addClass('doc-preview-image-wrap').append($img)
+			);
+			$body.data('imageObjectUrl', url);
+		}).catch(function (err) {
+			revokeImagePreviewUrl($body);
+			$body.html('<div class="doc-preview-error"><i class="fa fa-exclamation-circle"></i>' +
+				'<p>' + escHtml(err.message || 'Nije moguće učitati pregled.') + '</p></div>');
+		});
+	}
+
+	function revokeImagePreviewUrl($body) {
+		var url = $body.data('imageObjectUrl');
+		if (url) {
+			URL.revokeObjectURL(url);
+			$body.removeData('imageObjectUrl');
 		}
 	}
 
@@ -325,6 +370,7 @@
 	function closePreview() {
 		var $body = $('#doc-preview-body');
 		PdfPreview.cleanup($body);
+		revokeImagePreviewUrl($body);
 		$('#doc-preview-overlay').removeClass('open');
 		$body.html('');
 	}
@@ -347,6 +393,7 @@
 	}
 
 	function getTypeInfo(mime, fileName) {
+		if (mime === 'image/jpg') mime = 'image/jpeg';
 		if (mime && TYPE_BY_MIME[mime]) return TYPE_BY_MIME[mime];
 		var ext = getExtension(fileName || '').toLowerCase();
 		return TYPE_BY_EXT[ext] || { label: (ext || '?').toUpperCase(), cssClass: 'type-other' };
