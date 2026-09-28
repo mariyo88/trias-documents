@@ -101,6 +101,7 @@
         bindDocActionMenus();
         bindUploadZone();
         bindUploadSubmit();
+        bindUploadCollapse();
         bindMoveDocModal();
         bindDeleteDocModal();
 
@@ -675,6 +676,30 @@
     // ══════════════════════════════════════════════════════════════════════
     // UPLOAD
     // ══════════════════════════════════════════════════════════════════════
+
+    var UPLOAD_COLLAPSED_KEY = 'docs-upload-collapsed';
+
+    function setUploadCollapsed(collapsed) {
+        var $card = $('#upload-card');
+        var $toggle = $('#upload-card-toggle');
+        $card.toggleClass('is-collapsed', collapsed);
+        $toggle.attr('aria-expanded', collapsed ? 'false' : 'true');
+        try {
+            localStorage.setItem(UPLOAD_COLLAPSED_KEY, collapsed ? '1' : '0');
+        } catch (e) { /* ignore quota / private mode */ }
+    }
+
+    function bindUploadCollapse() {
+        var collapsed = false;
+        try {
+            collapsed = localStorage.getItem(UPLOAD_COLLAPSED_KEY) === '1';
+        } catch (e) { /* ignore */ }
+        setUploadCollapsed(collapsed);
+
+        $('#upload-card-toggle').on('click', function () {
+            setUploadCollapsed(!$('#upload-card').hasClass('is-collapsed'));
+        });
+    }
 
     function bindUploadZone() {
         var $zone  = $('#upload-zone');

@@ -86,6 +86,7 @@
 	function loadDocuments(page, search) {
 		currentPage = page;
 
+		$('.doc-table-wrap').removeClass('is-empty');
 		$('#my-docs-container').html(
 			'<tr class="doc-table-message"><td colspan="4"><div class="doc-spinner">' +
 			'<i class="fa fa-spinner fa-spin"></i>Učitavanje...</div></td></tr>'
@@ -98,10 +99,13 @@
 		AuthService.authFetch(url).then(function (data) {
 			renderDocuments(data);
 		}).catch(function (err) {
+			$('.doc-table-wrap').addClass('is-empty');
 			$('#my-docs-container').html(
-				'<tr class="doc-table-message"><td colspan="4"><div class="doc-empty-state">' +
-				'<i class="fa fa-exclamation-circle"></i>' +
-				'<p>' + escHtml(err.message || 'Greška pri učitavanju dokumenata.') + '</p></div></td></tr>'
+				'<tr class="doc-table-message"><td colspan="4"><div class="doc-empty-state is-error">' +
+				'<div class="doc-empty-icon"><i class="fa fa-exclamation-circle"></i></div>' +
+				'<h4 class="doc-empty-title">Nešto nije u redu</h4>' +
+				'<p class="doc-empty-text">' + escHtml(err.message || 'Greška pri učitavanju dokumenata.') + '</p>' +
+				'</div></td></tr>'
 			);
 		});
 	}
@@ -111,17 +115,16 @@
 		var docs = data.content || [];
 
 		if (docs.length === 0) {
-			var emptyMsg = currentSearch
-				? 'Nema dokumenata koji odgovaraju pretrazi „' + escHtml(currentSearch) + '“.'
-				: 'Niste otpremili nijedan dokument.';
+			$('.doc-table-wrap').addClass('is-empty');
 			$('#my-docs-container').html(
-				'<tr class="doc-table-message"><td colspan="4"><div class="doc-empty-state">' +
-				'<i class="fa fa-file-o"></i><p>' + emptyMsg + '</p></div></td></tr>'
+				'<tr class="doc-table-message"><td colspan="4">' + buildEmptyStateHtml() + '</td></tr>'
 			);
 			$('#my-docs-pagination').html('');
+			bindEmptyStateActions();
 			return;
 		}
 
+		$('.doc-table-wrap').removeClass('is-empty');
 		var rows = docs.map(function (doc) {
 			var typeInfo = getTypeInfo(doc.contentType, doc.fileName);
 			var size = formatSize(doc.size);
@@ -162,6 +165,35 @@
 
 		$('#my-docs-container').html(rows);
 		renderPagination(data.number, data.totalPages);
+	}
+
+	function buildEmptyStateHtml() {
+		var icon = 'fa-file-o';
+		var title = 'Još nema dokumenata';
+		var text = 'Otpremite prvi fajl da se pojavi u listi.';
+		var actions = '';
+
+		if (currentSearch) {
+			icon = 'fa-search';
+			title = 'Nema rezultata';
+			text = 'Nijedan dokument ne odgovara pretrazi „' + escHtml(currentSearch) + '“.';
+			actions =
+				'<button type="button" class="btn-secondary-doc" id="my-docs-empty-clear-search">' +
+				'<i class="fa fa-times"></i> Obriši pretragu</button>';
+		}
+
+		return '<div class="doc-empty-state">' +
+			'<div class="doc-empty-icon"><i class="fa ' + icon + '"></i></div>' +
+			'<h4 class="doc-empty-title">' + title + '</h4>' +
+			'<p class="doc-empty-text">' + text + '</p>' +
+			(actions ? '<div class="doc-empty-actions">' + actions + '</div>' : '') +
+			'</div>';
+	}
+
+	function bindEmptyStateActions() {
+		$('#my-docs-empty-clear-search').on('click', function () {
+			$('#my-docs-clear-btn').trigger('click');
+		});
 	}
 
 	// ── Pagination ────────────────────────────────────────────────────────

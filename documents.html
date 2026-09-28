@@ -119,58 +119,67 @@
 
         <!-- ── Upload card (shown when current folder allows WRITE) ─── -->
         <div class="doc-card hidden" id="upload-card">
-            <h3><i class="fa fa-upload"></i>Otpremi novi dokument</h3>
+            <button type="button" class="doc-card-toggle" id="upload-card-toggle"
+                    aria-expanded="true" aria-controls="upload-card-body"
+                    title="Skupi ili razvij formu za otpremanje">
+                <h3>
+                    <i class="fa fa-upload"></i>Otpremi novi dokument
+                </h3>
+                <i class="fa fa-chevron-up doc-card-toggle-icon" aria-hidden="true"></i>
+            </button>
 
-            <!-- Upload alert -->
-            <div id="upload-alert" class="doc-alert" role="alert"></div>
+            <div id="upload-card-body" class="doc-card-body">
+                <!-- Upload alert -->
+                <div id="upload-alert" class="doc-alert" role="alert"></div>
 
-            <form id="upload-form" novalidate>
+                <form id="upload-form" novalidate>
 
-                <!-- Drop zone -->
-                <div id="upload-zone" class="upload-zone" role="button" tabindex="0"
-                     aria-label="Kliknite ili prevucite fajl ovdje">
-                    <input type="file" id="upload-file-input" name="file"
-                           accept=".pdf,.doc,.docx,.json,.xml,.txt"
-                           aria-label="Izaberite fajl za otpremanje">
-                    <div class="upload-zone-icon">
-                        <i class="fa fa-cloud-upload"></i>
+                    <!-- Drop zone -->
+                    <div id="upload-zone" class="upload-zone" role="button" tabindex="0"
+                         aria-label="Kliknite ili prevucite fajl ovdje">
+                        <input type="file" id="upload-file-input" name="file"
+                               accept=".pdf,.doc,.docx,.json,.xml,.txt"
+                               aria-label="Izaberite fajl za otpremanje">
+                        <div class="upload-zone-icon">
+                            <i class="fa fa-cloud-upload"></i>
+                        </div>
+                        <div class="upload-zone-text">
+                            <span class="upload-text-desktop">Kliknite ili prevucite fajl ovdje</span>
+                            <span class="upload-text-mobile">Dodirnite da izaberete fajl</span>
+                        </div>
+                        <div class="upload-zone-hint">
+                            Podržani formati: <strong>PDF, DOC, DOCX, JSON, XML, TXT</strong>
+                        </div>
                     </div>
-                    <div class="upload-zone-text">
-                        <span class="upload-text-desktop">Kliknite ili prevucite fajl ovdje</span>
-                        <span class="upload-text-mobile">Dodirnite da izaberete fajl</span>
+
+                    <!-- Selected file info -->
+                    <div id="upload-selected-file" class="upload-selected-file" role="status">
+                        <i class="fa fa-file-text-o"></i>
+                        <span id="upload-selected-name" class="file-name"></span>
+                        <span id="upload-selected-size" class="file-size"></span>
+                        <button type="button" id="upload-clear-btn" class="upload-clear-btn"
+                                title="Ukloni odabrani fajl" aria-label="Ukloni odabrani fajl">
+                            <i class="fa fa-times"></i>
+                        </button>
                     </div>
-                    <div class="upload-zone-hint">
-                        Podržani formati: <strong>PDF, DOC, DOCX, JSON, XML, TXT</strong>
+
+                    <!-- Progress bar -->
+                    <div id="upload-progress-wrap" class="upload-progress-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                        <div id="upload-progress-label" class="upload-progress-label">Otpremanje...</div>
+                        <div class="progress">
+                            <div id="upload-progress-bar" class="progress-bar"></div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Selected file info -->
-                <div id="upload-selected-file" class="upload-selected-file" role="status">
-                    <i class="fa fa-file-text-o"></i>
-                    <span id="upload-selected-name" class="file-name"></span>
-                    <span id="upload-selected-size" class="file-size"></span>
-                    <button type="button" id="upload-clear-btn" class="upload-clear-btn"
-                            title="Ukloni odabrani fajl" aria-label="Ukloni odabrani fajl">
-                        <i class="fa fa-times"></i>
-                    </button>
-                </div>
-
-                <!-- Progress bar -->
-                <div id="upload-progress-wrap" class="upload-progress-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-                    <div id="upload-progress-label" class="upload-progress-label">Otpremanje...</div>
-                    <div class="progress">
-                        <div id="upload-progress-bar" class="progress-bar"></div>
+                    <!-- Submit -->
+                    <div class="upload-actions">
+                        <button type="submit" id="upload-submit-btn" class="btn-primary-doc" disabled>
+                            <i class="fa fa-upload"></i> Otpremi dokument
+                        </button>
                     </div>
-                </div>
 
-                <!-- Submit -->
-                <div class="upload-actions">
-                    <button type="submit" id="upload-submit-btn" class="btn-primary-doc" disabled>
-                        <i class="fa fa-upload"></i> Otpremi dokument
-                    </button>
-                </div>
-
-            </form>
+                </form>
+            </div>
         </div>
         <!-- /Upload card -->
 
