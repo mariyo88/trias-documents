@@ -576,12 +576,30 @@
     background: #F4F4F4;
 }
 
-/* PDF / iframe */
+/* PDF / iframe (desktop native viewer) */
 .doc-preview-body iframe {
     width: 100%;
     height: 100%;
     border: none;
     display: block;
+}
+
+/* PDF.js canvas stack (mobile / no native inline PDF) */
+.doc-preview-pdfjs {
+    height: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    background: #525252;
+    padding: 8px;
+    box-sizing: border-box;
+}
+.doc-preview-pdfjs .pdf-page {
+    display: block;
+    margin: 0 auto 8px;
+    max-width: 100%;
+    height: auto;
+    background: #FFFFFF;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
 }
 
 /* Text / JSON / XML */

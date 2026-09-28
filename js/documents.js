@@ -18,7 +18,7 @@
  * Folder permissions (from FolderDto.permission): READ / WRITE / DELETE.
  * ADMIN bypasses ACL. UI mirrors backend rules; backend remains authoritative.
  *
- * Depends on: jQuery, AuthService, APP_CONFIG
+ * Depends on: jQuery, AuthService, APP_CONFIG, PdfPreview
  */
 (function ($) {
     'use strict';
@@ -1100,10 +1100,9 @@
             if (!r.ok) return Promise.reject(new Error('HTTP ' + r.status));
             return r.blob();
         }).then(function (blob) {
-            var url = URL.createObjectURL(blob);
-            $body.data('blobUrl', url);
-            $body.html('<iframe src="' + url + '" title="' + escAttr(fileName) + '"></iframe>');
+            return PdfPreview.render($body, blob, fileName);
         }).catch(function (err) {
+            PdfPreview.cleanup($body);
             $body.html('<div class="doc-preview-error"><i class="fa fa-exclamation-circle"></i>' +
                 '<p>' + escHtml(err.message || 'Nije moguće učitati pregled.') + '</p></div>');
         });
@@ -1127,8 +1126,7 @@
 
     function closePreview() {
         var $body = $('#doc-preview-body');
-        var blobUrl = $body.data('blobUrl');
-        if (blobUrl) { URL.revokeObjectURL(blobUrl); $body.removeData('blobUrl'); }
+        PdfPreview.cleanup($body);
         $('#doc-preview-overlay').removeClass('open');
         $body.html('');
     }
