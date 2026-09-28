@@ -2,23 +2,21 @@
  * documents.js — Document manager page logic
  *
  * Endpoints:
- *   GET    /api/folders                          — folder tree
- *   POST   /api/folders                          — create folder
- *   PATCH  /api/folders/{id}/rename              — rename folder
- *   DELETE /api/folders/{id}                     — delete folder
- *   POST   /api/documents?folderId=X             — upload into folder
- *   GET    /api/documents?folderId=X             — docs in folder
- *   GET    /api/documents?rootOnly=true          — root docs
- *   GET    /api/documents                        — all docs
- *   PATCH  /api/documents/{id}/move              — move to folder
- *   DELETE /api/documents/{id}                   — delete document (ADMIN)
- *   GET    /api/documents/{id}/preview           — preview
- *   GET    /api/documents/{id}/download          — download
+ *   GET    /api/folders                          — folder tree (filtered by READ)
+ *   POST   /api/folders                          — create folder (ADMIN)
+ *   PATCH  /api/folders/{id}/rename              — rename folder (ADMIN)
+ *   DELETE /api/folders/{id}                     — delete folder (ADMIN)
+ *   GET/PUT /api/folders/{id}/permissions        — folder ACL (ADMIN)
+ *   POST   /api/documents?folderId=X             — upload (needs WRITE)
+ *   GET    /api/documents?folderId=X             — docs in folder (needs READ)
+ *   GET    /api/documents?rootOnly=true          — root docs (ADMIN)
+ *   GET    /api/documents                        — all visible docs
+ *   PATCH  /api/documents/{id}/move              — move (DELETE src + WRITE dst)
+ *   DELETE /api/documents/{id}                   — delete (needs DELETE)
+ *   GET    /api/documents/{id}/preview|download  — needs READ
  *
- * Role-based UI (the backend enforces the same rules):
- *   VIEWER   — preview / download only
- *   CUSTOMER — + upload, move, create / rename folders
- *   ADMIN    — + delete documents and folders
+ * Folder permissions (from FolderDto.permission): READ / WRITE / DELETE.
+ * ADMIN bypasses ACL. UI mirrors backend rules; backend remains authoritative.
  *
  * Depends on: jQuery, AuthService, APP_CONFIG
  */
@@ -56,9 +54,31 @@
     };
 
     var perms = {
-        write:  false,
-        delete: false
+        isAdmin:       false,
+        manageFolders: false   // create / rename / delete folders + ACL UI
     };
+
+    var PERM_RANK = { READ: 1, WRITE: 2, DELETE: 3 };
+
+    var PERM_LABELS = {
+        READ:   'Pregled',
+        WRITE:  'Izmena',
+        DELETE: 'Brisanje'
+    };
+
+    var ROLE_LABELS = {
+        VIEWER:   'Posmatrač',
+        CUSTOMER: 'Klijent',
+        ADMIN:    'Administrator'
+    };
+
+    function permLabel(level) {
+        return PERM_LABELS[level] || level || '';
+    }
+
+    function roleLabel(role) {
+        return ROLE_LABELS[role] || role || '';
+    }
 
     // ── Init ───────────────────────────────────────────────────────────────
 
@@ -71,29 +91,28 @@
     });
 
     function init() {
-        perms.write  = AuthService.canWrite();
-        perms.delete = AuthService.canDelete();
+        perms.isAdmin       = AuthService.isAdmin();
+        perms.manageFolders = perms.isAdmin;
         applyPermissions();
 
         bindModalClose();
         bindPreviewModal();
         bindFilterClear();
         bindDocActionMenus();
+        bindUploadZone();
+        bindUploadSubmit();
+        bindMoveDocModal();
+        bindDeleteDocModal();
 
-        if (perms.write) {
-            bindUploadZone();
-            bindUploadSubmit();
+        if (perms.manageFolders) {
             bindNewFolderModal();
             bindRenameFolderModal();
-            bindMoveDocModal();
+            bindDeleteFolderModal();
+            bindPermissionsModal();
 
             $('#new-root-folder-btn').on('click', function () {
                 openNewFolderModal(null);
             });
-        }
-        if (perms.delete) {
-            bindDeleteFolderModal();
-            bindDeleteDocModal();
         }
 
         // ── Header search form ───────────────────────────────────────────
@@ -108,6 +127,7 @@
                 $('#folder-tree .doc-tree-row[data-folder-id="all"]').addClass('active');
             }
             updateFilterBar();
+            updateUploadVisibility();
             loadDocuments(0);
         });
 
@@ -116,6 +136,7 @@
             if ($.trim($(this).val()) === '' && state.searchQuery !== '') {
                 state.searchQuery = '';
                 updateFilterBar();
+                updateUploadVisibility();
                 loadDocuments(0);
             }
         });
@@ -126,10 +147,50 @@
     }
 
     function applyPermissions() {
-        $('[data-requires="write"]').toggleClass('hidden', !perms.write);
-        if (!perms.write) {
-            $('#documents-page-subtitle').text('Pregledajte i preuzmite dokumente.');
+        $('[data-requires="manage-folders"]').toggleClass('hidden', !perms.manageFolders);
+        if (!perms.isAdmin) {
+            $('#documents-page-subtitle').text('Pregledajte i preuzmite dokumente prema dodeljenim dozvolama.');
         }
+        updateUploadVisibility();
+    }
+
+    function permissionImplies(have, need) {
+        if (perms.isAdmin) return true;
+        if (!have || !need) return false;
+        return (PERM_RANK[have] || 0) >= (PERM_RANK[need] || 0);
+    }
+
+    function folderPermission(folderId) {
+        if (folderId == null || folderId === 'all' || folderId === 'root') return null;
+        var node = findFolderInTree(state.folderTree, folderId);
+        return node && node.permission ? node.permission : null;
+    }
+
+    function canWriteInFolder(folderId) {
+        return permissionImplies(folderPermission(folderId), 'WRITE');
+    }
+
+    function canDeleteInFolder(folderId) {
+        return permissionImplies(folderPermission(folderId), 'DELETE');
+    }
+
+    function canWriteHere() {
+        if (perms.isAdmin) {
+            return state.currentFolderId === 'root'
+                || typeof state.currentFolderId === 'number';
+        }
+        return typeof state.currentFolderId === 'number'
+            && canWriteInFolder(state.currentFolderId);
+    }
+
+    function updateUploadVisibility() {
+        var show = false;
+        if (perms.isAdmin) {
+            show = state.currentFolderId === 'root' || (typeof state.currentFolderId === 'number');
+        } else {
+            show = typeof state.currentFolderId === 'number' && canWriteInFolder(state.currentFolderId);
+        }
+        $('#upload-card').toggleClass('hidden', !show);
     }
 
     // ══════════════════════════════════════════════════════════════════════
@@ -210,17 +271,17 @@
 
         // "Svi dokumenti" node
         html += buildSpecialNode('all', 'fa-th-list', 'Svi dokumenti', state.currentFolderId === null);
-        // "Root" node
-        html += buildSpecialNode('root', 'fa-inbox', 'Root (bez foldera)', state.currentFolderId === 'root');
+        // Root is ADMIN-only (non-admin users have no access to unfiled documents)
+        if (perms.isAdmin) {
+            html += buildSpecialNode('root', 'fa-inbox', 'Root (bez foldera)', state.currentFolderId === 'root');
+        }
 
-        // Folder nodes
         tree.forEach(function (node) {
             html += buildFolderNode(node, 0);
         });
 
         $tree.html(html);
 
-        // Bind special nodes
         $tree.off('click.tree').on('click.tree', '.doc-tree-row', function (e) {
             if ($(e.target).closest('.doc-tree-actions').length) return;
             if ($(e.target).closest('.doc-tree-toggle').length) return;
@@ -232,19 +293,17 @@
             else if (fid === 'root') state.currentFolderId = 'root';
             else state.currentFolderId = parseInt(fid, 10);
 
-            // Clear search when navigating folders
             state.searchQuery = '';
             $('#doc-search-input').val('');
 
-            // Update active state
             $tree.find('.doc-tree-row').removeClass('active');
             $row.addClass('active');
 
             updateFilterBar();
+            updateUploadVisibility();
             loadDocuments(0);
         });
 
-        // Collapse toggle — folders start open
         $tree.on('click.toggle', '.doc-tree-toggle', function (e) {
             e.stopPropagation();
             var $btn      = $(this);
@@ -267,16 +326,16 @@
             }
         });
 
-        // Folder action buttons
         $tree.on('click.actions', '.doc-tree-action-btn', function (e) {
             e.stopPropagation();
             var action = $(this).data('action');
             var fid    = parseInt($(this).data('id'), 10);
             var name   = $(this).data('name');
 
-            if (action === 'new-sub' && perms.write)  openNewFolderModal(fid);
-            if (action === 'rename'  && perms.write)  openRenameFolderModal(fid, name);
-            if (action === 'delete'  && perms.delete) openDeleteFolderModal(fid, name);
+            if (action === 'new-sub' && perms.manageFolders)  openNewFolderModal(fid);
+            if (action === 'rename'  && perms.manageFolders)  openRenameFolderModal(fid, name);
+            if (action === 'delete'  && perms.manageFolders) openDeleteFolderModal(fid, name);
+            if (action === 'permissions' && perms.manageFolders) openPermissionsModal(fid, name);
         });
     }
 
@@ -309,17 +368,15 @@
         html += '<i class="fa fa-folder' + (isOpen ? '-open' : '') + ' doc-tree-icon" aria-hidden="true"></i>';
         html += '<span class="doc-tree-label">' + escHtml(node.name) + '</span>';
 
-        // Action buttons (visible on hover via CSS; always on touch)
-        if (perms.write || perms.delete) {
+        if (perms.manageFolders) {
             html += '<div class="doc-tree-actions">';
-            if (perms.write) {
-                html += '<button type="button" class="doc-tree-action-btn" data-action="new-sub" data-id="' + node.id + '" data-name="' + escAttr(node.name) + '" title="Novi podfolder"><i class="fa fa-folder-o"></i></button>';
-                html += '<button type="button" class="doc-tree-action-btn" data-action="rename"  data-id="' + node.id + '" data-name="' + escAttr(node.name) + '" title="Preimenuj"><i class="fa fa-pencil"></i></button>';
-            }
-            if (perms.delete) {
-                html += '<button type="button" class="doc-tree-action-btn danger" data-action="delete" data-id="' + node.id + '" data-name="' + escAttr(node.name) + '" title="Obriši"><i class="fa fa-trash"></i></button>';
-            }
+            html += '<button type="button" class="doc-tree-action-btn" data-action="permissions" data-id="' + node.id + '" data-name="' + escAttr(node.name) + '" title="Dozvole"><i class="fa fa-lock"></i></button>';
+            html += '<button type="button" class="doc-tree-action-btn" data-action="new-sub" data-id="' + node.id + '" data-name="' + escAttr(node.name) + '" title="Novi podfolder"><i class="fa fa-folder-o"></i></button>';
+            html += '<button type="button" class="doc-tree-action-btn" data-action="rename"  data-id="' + node.id + '" data-name="' + escAttr(node.name) + '" title="Preimenuj"><i class="fa fa-pencil"></i></button>';
+            html += '<button type="button" class="doc-tree-action-btn danger" data-action="delete" data-id="' + node.id + '" data-name="' + escAttr(node.name) + '" title="Obriši"><i class="fa fa-trash"></i></button>';
             html += '</div>';
+        } else if (node.permission) {
+            html += '<span class="doc-tree-perm-badge" title="Vaša dozvola">' + escHtml(permLabel(node.permission)) + '</span>';
         }
 
         html += '</div>'; // .doc-tree-row
@@ -373,6 +430,7 @@
             $('#doc-filter-bar').hide();
             $('#folder-tree .doc-tree-row').removeClass('active');
             $('#folder-tree .doc-tree-row[data-folder-id="all"]').addClass('active');
+            updateUploadVisibility();
             loadDocuments(0);
         });
     }
@@ -549,11 +607,12 @@
     function openMoveDocModal(docId, docName) {
         $('#move-doc-confirm-btn').data('doc-id', docId);
         $('#move-doc-name-label').text('"' + docName + '"');
+        populateMoveSelect(state.folderTree);
         openModal('modal-move-doc');
     }
 
     // ══════════════════════════════════════════════════════════════════════
-    // DELETE DOCUMENT MODAL (ADMIN)
+    // DELETE DOCUMENT MODAL
     // ══════════════════════════════════════════════════════════════════════
 
     function bindDeleteDocModal() {
@@ -588,16 +647,24 @@
     }
 
     function populateMoveSelect(tree) {
-        var html = '<option value="">— Root (bez foldera) —</option>';
+        var html = '';
+        if (perms.isAdmin) {
+            html += '<option value="">— Root (bez foldera) —</option>';
+        }
         html += buildSelectOptions(tree, 0);
+        if (!html) {
+            html = '<option value="" disabled>Nema foldera sa dozvolom za izmenu</option>';
+        }
         $('#move-doc-folder-select').html(html);
     }
 
     function buildSelectOptions(nodes, depth) {
         var html = '';
         nodes.forEach(function (node) {
-            var prefix = '\u00a0'.repeat(depth * 3);
-            html += '<option value="' + node.id + '">' + prefix + escHtml(node.name) + '</option>';
+            if (perms.isAdmin || canWriteInFolder(node.id)) {
+                var prefix = '\u00a0'.repeat(depth * 3);
+                html += '<option value="' + node.id + '">' + prefix + escHtml(node.name) + '</option>';
+            }
             if (node.children && node.children.length) {
                 html += buildSelectOptions(node.children, depth + 1);
             }
@@ -816,7 +883,7 @@
                 '<i class="fa fa-th-list"></i> Prikaži sve</button>';
         }
 
-        if (perms.write && !state.searchQuery) {
+        if (canWriteHere() && !state.searchQuery) {
             actions =
                 '<button type="button" class="btn-primary-doc" id="doc-empty-upload-btn">' +
                 '<i class="fa fa-upload"></i> Otpremi dokument</button>' +
@@ -878,13 +945,19 @@
                 '<i class="fa fa-eye"></i><span>Pregled</span></button>';
 
             var menuItems = '';
-            if (perms.write) {
+            var docFolderId = doc.folderId;
+            var canMove = perms.isAdmin
+                || (docFolderId != null && canDeleteInFolder(docFolderId));
+            var canDel = perms.isAdmin
+                || (docFolderId != null && canDeleteInFolder(docFolderId));
+
+            if (canMove) {
                 menuItems +=
                     '<button type="button" class="doc-actions-menu-item btn-move-doc" role="menuitem" ' +
                     'data-id="' + id + '" data-name="' + name + '">' +
                     '<i class="fa fa-share"></i><span>Premesti</span></button>';
             }
-            if (perms.delete) {
+            if (canDel) {
                 menuItems +=
                     '<button type="button" class="doc-actions-menu-item btn-delete-doc" role="menuitem" ' +
                     'data-id="' + id + '" data-name="' + name + '">' +
@@ -953,11 +1026,11 @@
             })
             .on('click.docactions', '.btn-move-doc', function () {
                 closeAllDocActionMenus();
-                if (perms.write) openMoveDocModal($(this).data('id'), $(this).data('name'));
+                openMoveDocModal($(this).data('id'), $(this).data('name'));
             })
             .on('click.docactions', '.btn-delete-doc', function () {
                 closeAllDocActionMenus();
-                if (perms.delete) openDeleteDocModal($(this).data('id'), $(this).data('name'));
+                openDeleteDocModal($(this).data('id'), $(this).data('name'));
             });
     }
 
@@ -1166,5 +1239,188 @@
     }
 
     function escAttr(str) { return escHtml(str); }
+
+    // ══════════════════════════════════════════════════════════════════════
+    // FOLDER PERMISSIONS MODAL (ADMIN)
+    // ══════════════════════════════════════════════════════════════════════
+
+    var permState = {
+        folderId: null,
+        grants:   []   // { principalType, userId, userEmail, role, permission }
+    };
+
+    function bindPermissionsModal() {
+        $('#perm-add-btn').on('click', function () {
+            var type = $('#perm-principal-type').val();
+            var level = $('#perm-level').val();
+            var grant;
+
+            if (type === 'ROLE') {
+                var role = $('#perm-role').val();
+                if (!role) return;
+                if (permState.grants.some(function (g) {
+                    return g.principalType === 'ROLE' && g.role === role;
+                })) {
+                    showPermAlert('Dozvola za ulogu „' + roleLabel(role) + '“ već postoji.', 'error');
+                    return;
+                }
+                grant = { principalType: 'ROLE', role: role, userId: null, userEmail: null, permission: level };
+            } else {
+                var userId = parseInt($('#perm-user-select').val(), 10);
+                var userEmail = $('#perm-user-select option:selected').text();
+                if (!userId) {
+                    showPermAlert('Izaberite korisnika.', 'error');
+                    return;
+                }
+                if (permState.grants.some(function (g) {
+                    return g.principalType === 'USER' && g.userId === userId;
+                })) {
+                    showPermAlert('Dozvola za ovog korisnika već postoji.', 'error');
+                    return;
+                }
+                grant = {
+                    principalType: 'USER',
+                    userId: userId,
+                    userEmail: userEmail,
+                    role: null,
+                    permission: level
+                };
+            }
+            permState.grants.push(grant);
+            renderPermGrants();
+            hidePermAlert();
+        });
+
+        $('#perm-principal-type').on('change', function () {
+            var isRole = $(this).val() === 'ROLE';
+            $('#perm-role-wrap').toggle(isRole);
+            $('#perm-user-wrap').toggle(!isRole);
+        });
+
+        $('#perm-save-btn').on('click', function () {
+            var $btn = $(this);
+            var payload = {
+                permissions: permState.grants.map(function (g) {
+                    return {
+                        principalType: g.principalType,
+                        userId: g.principalType === 'USER' ? g.userId : null,
+                        role: g.principalType === 'ROLE' ? g.role : null,
+                        permission: g.permission
+                    };
+                })
+            };
+
+            $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Čuvanje...');
+
+            AuthService.authFetch('/api/folders/' + permState.folderId + '/permissions', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(function () {
+                closeModal('modal-folder-permissions');
+                showUploadAlert('Dozvole za folder su sačuvane.', 'success');
+                return loadFolderTree();
+            }).catch(function (err) {
+                showPermAlert(err.message || 'Greška pri čuvanju dozvola.', 'error');
+            }).finally(function () {
+                $btn.prop('disabled', false).html('<i class="fa fa-check"></i> Sačuvaj');
+            });
+        });
+
+        $('#perm-grants-list').on('click', '.perm-remove-btn', function () {
+            var idx = parseInt($(this).data('idx'), 10);
+            permState.grants.splice(idx, 1);
+            renderPermGrants();
+        });
+
+        $('#perm-grants-list').on('change', '.perm-level-select', function () {
+            var idx = parseInt($(this).data('idx'), 10);
+            permState.grants[idx].permission = $(this).val();
+        });
+    }
+
+    function openPermissionsModal(folderId, folderName) {
+        permState.folderId = folderId;
+        permState.grants = [];
+        hidePermAlert();
+        $('#perm-folder-name-label').text(folderName);
+        $('#perm-grants-list').html('<div class="doc-spinner"><i class="fa fa-spinner fa-spin"></i> Učitavanje...</div>');
+        $('#perm-principal-type').val('ROLE').trigger('change');
+        $('#perm-level').val('READ');
+        openModal('modal-folder-permissions');
+
+        Promise.all([
+            AuthService.authFetch('/api/folders/' + folderId + '/permissions'),
+            AuthService.authFetch('/api/admin/users?page=0&size=100')
+        ]).then(function (results) {
+            var grants = results[0] || [];
+            var usersPage = results[1] || {};
+            var users = usersPage.content || [];
+
+            permState.grants = grants.map(function (g) {
+                return {
+                    principalType: g.principalType,
+                    userId: g.userId,
+                    userEmail: g.userEmail || (g.userDisplayName || ''),
+                    role: g.role,
+                    permission: g.permission
+                };
+            });
+
+            var userOpts = users
+                .filter(function (u) { return u.role !== 'ADMIN'; })
+                .map(function (u) {
+                    return '<option value="' + u.id + '">' +
+                        escHtml(u.email) + ' (' + escHtml(roleLabel(u.role)) + ')</option>';
+                }).join('');
+            $('#perm-user-select').html('<option value="">— Izaberite korisnika —</option>' + userOpts);
+
+            renderPermGrants();
+        }).catch(function (err) {
+            showPermAlert(err.message || 'Greška pri učitavanju dozvola.', 'error');
+            $('#perm-grants-list').html('');
+        });
+    }
+
+    function renderPermGrants() {
+        if (!permState.grants.length) {
+            $('#perm-grants-list').html(
+                '<div class="perm-empty">Nema dodeljenih dozvola — samo administrator može pristupiti ovom folderu.</div>'
+            );
+            return;
+        }
+
+        var html = '<table class="perm-table"><thead><tr>' +
+            '<th>Dodeljeno</th><th>Nivo</th><th class="perm-col-actions"></th></tr></thead><tbody>';
+
+        permState.grants.forEach(function (g, idx) {
+            var kind = g.principalType === 'ROLE' ? 'Uloga' : 'Korisnik';
+            var value = g.principalType === 'ROLE'
+                ? escHtml(roleLabel(g.role))
+                : escHtml(g.userEmail || ('#' + g.userId));
+            html += '<tr>' +
+                '<td><span class="perm-principal"><span class="perm-principal-kind">' + kind +
+                '</span><strong>' + value + '</strong></span></td>' +
+                '<td><select class="perm-level-select" data-idx="' + idx + '">' +
+                '<option value="READ"' + (g.permission === 'READ' ? ' selected' : '') + '>' + permLabel('READ') + '</option>' +
+                '<option value="WRITE"' + (g.permission === 'WRITE' ? ' selected' : '') + '>' + permLabel('WRITE') + '</option>' +
+                '<option value="DELETE"' + (g.permission === 'DELETE' ? ' selected' : '') + '>' + permLabel('DELETE') + '</option>' +
+                '</select></td>' +
+                '<td class="perm-col-actions"><button type="button" class="perm-remove-btn" data-idx="' + idx + '" title="Ukloni" aria-label="Ukloni dozvolu">' +
+                '<i class="fa fa-times"></i></button></td>' +
+                '</tr>';
+        });
+        html += '</tbody></table>';
+        $('#perm-grants-list').html(html);
+    }
+
+    function showPermAlert(msg, type) {
+        $('#perm-alert').removeClass('error success info').addClass(type || 'error')
+            .html(msg).show();
+    }
+
+    function hidePermAlert() {
+        $('#perm-alert').hide().removeClass('error success info');
+    }
 
 })(jQuery);

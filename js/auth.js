@@ -337,13 +337,21 @@
         });
     }
 
-    /** Upload, move, create/rename folders. */
+    /**
+     * Legacy helper: ADMIN and CUSTOMER were historically "writers".
+     * Prefer per-folder permission checks from the documents page.
+     * Kept for pages that only need a coarse role gate.
+     */
     function canWrite() {
         return hasRole(ROLES.ADMIN, ROLES.CUSTOMER);
     }
 
-    /** Delete documents and folders. */
+    /** Folder/document delete at the global-role level — ADMIN only. Prefer per-folder checks. */
     function canDelete() {
+        return hasRole(ROLES.ADMIN);
+    }
+
+    function isAdmin() {
         return hasRole(ROLES.ADMIN);
     }
 
@@ -397,7 +405,8 @@
         refreshUser:        refreshUser,
         hasRole:            hasRole,
         canWrite:           canWrite,
-        canDelete:          canDelete
+        canDelete:          canDelete,
+        isAdmin:            isAdmin
     };
 
 })(window);

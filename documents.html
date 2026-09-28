@@ -117,8 +117,8 @@
             <p id="documents-page-subtitle">Otpremite, pregledajte i preuzmite vaše dokumente.</p>
         </div>
 
-        <!-- ── Upload card (shown only to roles that can write) ─── -->
-        <div class="doc-card hidden" id="upload-card" data-requires="write">
+        <!-- ── Upload card (shown when current folder allows WRITE) ─── -->
+        <div class="doc-card hidden" id="upload-card">
             <h3><i class="fa fa-upload"></i>Otpremi novi dokument</h3>
 
             <!-- Upload alert -->
@@ -182,7 +182,7 @@
                 <div class="doc-sidebar-card">
                     <div class="doc-sidebar-header">
                         <span><i class="fa fa-folder" style="margin-right:5px;"></i>Folderi</span>
-                        <button class="doc-sidebar-new-btn hidden" id="new-root-folder-btn" data-requires="write"
+                        <button class="doc-sidebar-new-btn hidden" id="new-root-folder-btn" data-requires="manage-folders"
                                 title="Novi folder" aria-label="Novi root folder">
                             <i class="fa fa-plus"></i>
                         </button>
@@ -367,6 +367,74 @@
             <button class="btn-secondary-doc" data-modal-close="modal-move-doc">Otkaži</button>
             <button class="btn-primary-doc" id="move-doc-confirm-btn">
                 <i class="fa fa-check"></i> Premesti
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+     MODAL: Dozvole foldera (ADMIN)
+     ============================================================ -->
+<div id="modal-folder-permissions" class="doc-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-folder-permissions-title">
+    <div class="doc-modal doc-modal-wide">
+        <div class="doc-modal-header">
+            <i class="fa fa-lock" style="color:#1A5C2A;"></i>
+            <h4 id="modal-folder-permissions-title">Dozvole foldera</h4>
+            <button class="doc-modal-close" data-modal-close="modal-folder-permissions" aria-label="Zatvori">&times;</button>
+        </div>
+        <div class="doc-modal-body perm-modal-body">
+            <div class="perm-folder-meta">
+                <span class="perm-folder-label">Folder</span>
+                <strong id="perm-folder-name-label" class="perm-folder-name"></strong>
+            </div>
+
+            <ul class="perm-legend" aria-label="Objašnjenje nivoa dozvola">
+                <li><span class="perm-chip">Pregled</span> pregled foldera i dokumenata</li>
+                <li><span class="perm-chip">Izmena</span> pregled + otpremanje</li>
+                <li><span class="perm-chip">Brisanje</span> sve uključujući brisanje</li>
+            </ul>
+            <p class="perm-legend-note">Administrator uvek ima pun pristup.</p>
+
+            <div id="perm-alert" class="doc-alert" role="alert" style="display:none;"></div>
+
+            <div class="perm-section perm-add-section">
+                <div class="perm-section-title">Dodaj dozvolu</div>
+                <div class="perm-add-controls">
+                    <select id="perm-principal-type" class="perm-select perm-select-type" aria-label="Tip dozvole">
+                        <option value="ROLE">Uloga</option>
+                        <option value="USER">Korisnik</option>
+                    </select>
+                    <span id="perm-role-wrap" class="perm-select-wrap">
+                        <select id="perm-role" class="perm-select perm-select-target" aria-label="Uloga">
+                            <option value="VIEWER">Posmatrač</option>
+                            <option value="CUSTOMER">Klijent</option>
+                        </select>
+                    </span>
+                    <span id="perm-user-wrap" class="perm-select-wrap" style="display:none;">
+                        <select id="perm-user-select" class="perm-select perm-select-target" aria-label="Korisnik">
+                            <option value="">— Izaberite korisnika —</option>
+                        </select>
+                    </span>
+                    <select id="perm-level" class="perm-select perm-select-level" aria-label="Nivo dozvole">
+                        <option value="READ">Pregled</option>
+                        <option value="WRITE">Izmena</option>
+                        <option value="DELETE">Brisanje</option>
+                    </select>
+                    <button type="button" class="btn-secondary-doc perm-add-btn" id="perm-add-btn">
+                        <i class="fa fa-plus"></i> Dodaj
+                    </button>
+                </div>
+            </div>
+
+            <div class="perm-section">
+                <div class="perm-section-title">Trenutne dozvole</div>
+                <div id="perm-grants-list" class="perm-grants-list"></div>
+            </div>
+        </div>
+        <div class="doc-modal-footer">
+            <button class="btn-secondary-doc" data-modal-close="modal-folder-permissions">Otkaži</button>
+            <button class="btn-primary-doc" id="perm-save-btn">
+                <i class="fa fa-check"></i> Sačuvaj
             </button>
         </div>
     </div>
