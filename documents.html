@@ -460,11 +460,16 @@
         <div class="doc-preview-header">
             <i class="fa fa-file-text-o" style="color:#1A5C2A;font-size:18px;flex-shrink:0;"></i>
             <h4 id="preview-modal-title">Pregled dokumenta</h4>
-            <button id="preview-download-btn" class="preview-download-btn" type="button">
-                <i class="fa fa-download"></i> Preuzmi original
-            </button>
-            <button id="preview-close-btn" class="doc-preview-close" type="button"
-                    aria-label="Zatvori pregled">&times;</button>
+            <div class="doc-preview-actions" role="group" aria-label="Akcije pregleda dokumenta">
+                <button id="preview-download-btn" class="preview-download-btn" type="button"
+                        title="Preuzmi original" aria-label="Preuzmi original">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                </button>
+                <button id="preview-close-btn" class="doc-preview-close" type="button"
+                        title="Zatvori pregled" aria-label="Zatvori pregled">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
         </div>
 
         <!-- Modal body — content injected by JS -->
