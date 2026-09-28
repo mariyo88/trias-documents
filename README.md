@@ -44,10 +44,11 @@ Podržani formati: PDF, DOC, DOCX, JSON, XML, TXT, JPG/JPEG, PNG, GIF, WEBP. PDF
 | Fajl | Naslov | Opis |
 |---|---|---|
 | `documents.html` | Dokumenti | Stablo foldera, otpremanje, pretraga, pregled, preuzimanje, premeštanje i brisanje |
+| `document.html` | Pregled dokumenta | Direktni pregled jednog dokumenta (`?id=`), npr. iz email obaveštenja |
 | `my-documents.html` | Moja dokumenta | Dokumenti koje je otpremio trenutni korisnik, sa pretragom i pregledom |
 | `account.html` | Moj nalog | Izmena profila i lozinke |
 
-`documents.html` traži prijavu. Folderi (kreiranje, preimenovanje, brisanje, ACL) su dostupni administratoru. Otpremanje, premeštanje i brisanje dokumenata prate dozvolu na folderu: `WRITE` za otpremanje, `DELETE` na izvoru i `WRITE` na odredištu za premeštanje, `DELETE` za brisanje. Pregled i preuzimanje traže `READ`.
+`documents.html` i `document.html` traže prijavu. Folderi (kreiranje, preimenovanje, brisanje, ACL) su dostupni administratoru. Otpremanje, premeštanje i brisanje dokumenata prate dozvolu na folderu: `WRITE` za otpremanje, `DELETE` na izvoru i `WRITE` na odredištu za premeštanje, `DELETE` za brisanje. Pregled i preuzimanje traže `READ`.
 
 ### Administracija
 
@@ -65,6 +66,7 @@ Uloge: `ADMIN` (pun pristup), `CUSTOMER` (klijent), `VIEWER` (samo pregled, osim
 .
 ├── index.html
 ├── documents.html
+├── document.html                  ← deep-link pregled iz emaila (?id=)
 ├── my-documents.html
 ├── account.html
 ├── admin-users.html
@@ -87,6 +89,7 @@ Uloge: `ADMIN` (pun pristup), `CUSTOMER` (klijent), `VIEWER` (samo pregled, osim
 │   ├── page-hero.css              ← deljeni hero banner
 │   ├── landing.css                ← početna
 │   ├── documents.css              ← dokumenti i pregled
+│   ├── document-view.css          ← stranica za deep-link pregled
 │   ├── account.css
 │   ├── admin-users.css
 │   ├── login.css
@@ -108,6 +111,7 @@ Uloge: `ADMIN` (pun pristup), `CUSTOMER` (klijent), `VIEWER` (samo pregled, osim
 │   ├── main-nav.js                ← meni (Korisnici samo za ADMIN)
 │   ├── landing.js                 ← CTA na početnoj kad postoji sesija
 │   ├── documents.js               ← folderi, otpremanje, ACL, premeštanje
+│   ├── document-view.js           ← pregled jednog dokumenta iz emaila
 │   ├── my-documents.js            ← lična lista dokumenata
 │   ├── pdf-preview.js             ← PDF pregled (iframe ili PDF.js)
 │   ├── account.js                 ← profil i lozinka
@@ -190,4 +194,4 @@ bootstrap.min.css → font-awesome.min.css → style.css
 jquery.min.js → bootstrap.min.js → config.js → auth.js → main.js → main-nav.js
 ```
 
-`documents.html` i `my-documents.html` dodatno učitavaju `pdf-preview.js` pre page skripte. PDF.js se povlači sa CDN-a samo kad pregledač nema pouzdan ugrađeni PDF viewer (mobilni).
+`documents.html`, `document.html` i `my-documents.html` dodatno učitavaju `pdf-preview.js` pre page skripte. PDF.js se povlači sa CDN-a samo kad pregledač nema pouzdan ugrađeni PDF viewer (mobilni).

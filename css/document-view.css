@@ -1,0 +1,212 @@
+/* ── Document view (email deep-link) ─────────────────────── */
+
+.doc-view-section {
+    padding: 32px 0 70px;
+    background: #F4F4F4;
+    min-height: calc(100vh - 200px);
+}
+
+.doc-view-card {
+    background: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    border-radius: 10px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.doc-view-spinner,
+.doc-view-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 14px;
+    padding: 72px 24px;
+    color: #555;
+}
+
+.doc-view-spinner i {
+    font-size: 36px;
+    color: #C8102E;
+}
+
+.doc-view-spinner p {
+    margin: 0;
+    font-size: 15px;
+}
+
+.doc-view-error i {
+    font-size: 48px;
+    color: #C8102E;
+    opacity: 0.7;
+}
+
+.doc-view-error h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #0A0A0A;
+}
+
+.doc-view-error p {
+    margin: 0 0 8px;
+    max-width: 420px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: #666;
+}
+
+.doc-view-error a.btn-primary-doc {
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+/* Header mirrors .doc-preview-header from the modal */
+.doc-view-header {
+    flex-shrink: 0;
+}
+
+.doc-view-file-icon {
+    color: #1A5C2A;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.doc-view-title-wrap {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.doc-view-title-wrap .doc-mime-badge {
+    align-self: flex-start;
+}
+
+.doc-view-title-wrap h1 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #0A0A0A;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Close is an <a> — keep circular button look from modal */
+.doc-view-header a.doc-preview-close {
+    text-decoration: none;
+}
+
+.doc-view-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    list-style: none;
+    margin: 0;
+    padding: 10px 20px 12px;
+    border-bottom: 1px solid #E0E0E0;
+    background: #FAFAFA;
+    flex-shrink: 0;
+}
+
+.doc-view-details li {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 13px;
+    color: #0A0A0A;
+}
+
+.doc-view-details .label {
+    font-size: 11px;
+    line-height: 1.3;
+    color: #8a8a8a;
+}
+
+/* Override .doc-preview-body { flex:1 } — page card has no fixed height,
+   so percentage-sized iframe/pdfjs need an explicit box. */
+.doc-view-preview {
+    position: relative;
+    flex: none;
+    height: min(72vh, 820px);
+    min-height: 360px;
+    overflow: hidden;
+}
+
+.doc-view-preview iframe,
+.doc-view-preview .doc-preview-pdfjs,
+.doc-view-preview .doc-preview-image-wrap,
+.doc-view-preview pre {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+@media (max-width: 767px) {
+    .doc-view-section {
+        padding: 0 0 50px;
+        background: #FFFFFF;
+    }
+
+    .doc-view-section > .container {
+        padding-left: 0;
+        padding-right: 0;
+        width: 100%;
+        max-width: none;
+    }
+
+    .doc-view-card {
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        min-height: calc(100vh - 160px);
+        min-height: calc(100dvh - 160px);
+    }
+
+    /* Same compact header as mobile preview modal */
+    .doc-view-header {
+        flex-wrap: nowrap;
+        gap: 10px;
+        padding: 10px 12px;
+        min-height: 58px;
+    }
+
+    .doc-view-file-icon {
+        display: none;
+    }
+
+    .doc-view-title-wrap h1 {
+        font-size: 14px;
+    }
+
+    .doc-view-header .doc-preview-actions {
+        gap: 7px;
+        margin-left: auto;
+    }
+
+    .doc-view-header .preview-download-btn,
+    .doc-view-header .doc-preview-close {
+        width: 40px;
+        height: 40px;
+        flex: 0 0 40px;
+        font-size: 15px;
+    }
+
+    .doc-view-details {
+        padding: 8px 12px 10px;
+        gap: 8px 16px;
+    }
+
+    .doc-view-preview {
+        height: calc(100vh - 280px);
+        height: calc(100dvh - 280px);
+        min-height: 280px;
+    }
+}
