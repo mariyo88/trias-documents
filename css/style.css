@@ -2618,24 +2618,63 @@ html.filter-drawer-open body {
 }
 
 @media only screen and (max-width: 767px) {
+  #footer .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
   .app-footer {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 14px;
+    align-items: stretch;
+    gap: 20px;
+    padding: 24px 0 18px;
+  }
+
+  .app-footer-brand {
+    align-self: flex-start;
+  }
+
+  .app-footer-brand img {
+    height: 26px;
   }
 
   .app-footer-nav {
-    justify-content: flex-start;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 10px;
+    width: 100%;
+  }
+
+  .app-footer-nav a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 12px;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .app-footer-nav a:hover,
+  .app-footer-nav a:focus {
+    background: rgba(200, 16, 46, 0.22);
+    border-color: rgba(200, 16, 46, 0.35);
+  }
+
+  .app-footer-nav a.footer-account-link {
+    grid-column: 1 / -1;
   }
 
   .app-footer-meta {
     flex-direction: column;
     align-items: flex-start;
     gap: 6px;
+    padding-top: 14px;
   }
 
   .app-footer-note {
     text-align: left;
+    line-height: 1.45;
   }
 }
 

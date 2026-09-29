@@ -1690,14 +1690,30 @@
 
 .doc-tree-perm-badge {
     margin-left: auto;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    color: #1A5C2A;
-    background: rgba(26, 92, 42, 0.08);
-    border-radius: 3px;
-    padding: 2px 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
     flex-shrink: 0;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1;
+}
+
+.doc-tree-perm-badge.perm-read {
+    color: #2f80ed;
+    background: rgba(47, 128, 237, 0.1);
+}
+
+.doc-tree-perm-badge.perm-write {
+    color: #b7791f;
+    background: rgba(183, 121, 31, 0.12);
+}
+
+.doc-tree-perm-badge.perm-delete {
+    color: #C8102E;
+    background: rgba(200, 16, 46, 0.1);
 }
 
 .perm-modal-body {

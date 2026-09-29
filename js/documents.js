@@ -84,6 +84,22 @@
         return PERM_LABELS[level] || level || '';
     }
 
+    function permIconsHtml(level) {
+        var label = permLabel(level);
+        var iconClass = 'fa-eye';
+        var levelClass = 'perm-read';
+        if (level === 'DELETE') {
+            iconClass = 'fa-trash';
+            levelClass = 'perm-delete';
+        } else if (level === 'WRITE') {
+            iconClass = 'fa-pencil';
+            levelClass = 'perm-write';
+        }
+        return '<span class="doc-tree-perm-badge ' + levelClass + '" title="' + escAttr(label) + '" aria-label="' + escAttr(label) + '">' +
+            '<i class="fa ' + iconClass + '" aria-hidden="true"></i>' +
+            '</span>';
+    }
+
     function roleLabel(role) {
         return ROLE_LABELS[role] || role || '';
     }
@@ -385,7 +401,7 @@
             html += '<button type="button" class="doc-tree-action-btn danger" data-action="delete" data-id="' + node.id + '" data-name="' + escAttr(node.name) + '" title="Obriši"><i class="fa fa-trash"></i></button>';
             html += '</div>';
         } else if (node.permission) {
-            html += '<span class="doc-tree-perm-badge" title="Vaša dozvola">' + escHtml(permLabel(node.permission)) + '</span>';
+            html += permIconsHtml(node.permission);
         }
 
         html += '</div>'; // .doc-tree-row
