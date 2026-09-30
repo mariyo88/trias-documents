@@ -29,24 +29,24 @@
 	display: inline-flex;
 	align-items: center;
 	gap: 8px;
-	padding: 13px 26px;
-	border-radius: 8px;
+	padding: 12px 24px;
+	border-radius: var(--radius-md, 6px);
 	font-size: 15px;
-	font-weight: 700;
+	font-weight: 600;
 	text-decoration: none;
 	transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 .landing-btn-primary {
-	background: #C8102E;
+	background: var(--primary, #EF6C2F);
 	color: #fff;
-	border: 2px solid #C8102E;
+	border: 1px solid var(--primary, #EF6C2F);
 }
 
 .landing-btn-primary:hover,
 .landing-btn-primary:focus {
-	background: #a50d25;
-	border-color: #a50d25;
+	background: #D4551A;
+	border-color: #D4551A;
 	color: #fff;
 }
 
@@ -76,7 +76,7 @@
 }
 
 .landing-auth-note a:hover {
-	color: #ff8a98;
+	color: #FDBA74;
 }
 
 .landing-panel {
@@ -97,8 +97,8 @@
 	width: 36px;
 	height: 36px;
 	border-radius: 8px;
-	background: rgba(200, 16, 46, 0.2);
-	color: #ff8a98;
+	background: rgba(239, 108, 47, 0.2);
+	color: #FDBA74;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -130,7 +130,7 @@
 .landing-fact {
 	text-align: center;
 	padding: 28px 16px;
-	border-right: 1px solid #F0F0F0;
+	border-right: 1px solid #F5F5F4;
 }
 
 .landing-fact:last-child {
@@ -138,7 +138,7 @@
 }
 
 .landing-fact i {
-	color: #C8102E;
+	color: #EF6C2F;
 	font-size: 22px;
 	margin-bottom: 8px;
 }
@@ -153,7 +153,7 @@
 .landing-fact span {
 	display: block;
 	font-size: 13px;
-	color: #777;
+	color: #78716C;
 	font-weight: 600;
 	letter-spacing: 0.3px;
 	text-transform: uppercase;
@@ -161,7 +161,7 @@
 
 .landing-section {
 	padding: 64px 0;
-	background: #F4F4F4;
+	background: #FAFAF9;
 }
 
 .landing-section-alt {
@@ -189,7 +189,7 @@
 .landing-heading .heading-line {
 	width: 48px;
 	height: 3px;
-	background: #C8102E;
+	background: #EF6C2F;
 	margin: 14px auto 0;
 }
 
@@ -209,7 +209,7 @@
 	width: 36px;
 	height: 36px;
 	border-radius: 50%;
-	background: #C8102E;
+	background: #EF6C2F;
 	color: #fff;
 	font-weight: 700;
 	margin-bottom: 14px;
@@ -232,7 +232,7 @@
 	gap: 16px;
 	align-items: flex-start;
 	padding: 18px 0;
-	border-bottom: 1px solid #F0F0F0;
+	border-bottom: 1px solid #F5F5F4;
 }
 
 .landing-note:last-child {
@@ -240,7 +240,7 @@
 }
 
 .landing-note i {
-	color: #C8102E;
+	color: #EF6C2F;
 	font-size: 18px;
 	margin-top: 3px;
 	width: 22px;
@@ -265,7 +265,7 @@
 	}
 	.landing-fact {
 		border-right: none;
-		border-bottom: 1px solid #F0F0F0;
+		border-bottom: 1px solid #F5F5F4;
 	}
 }
 
