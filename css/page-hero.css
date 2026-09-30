@@ -1,9 +1,9 @@
 /* ── Page Hero Banner (shared across pages) ── */
 .page-hero {
     background:
-        radial-gradient(ellipse 70% 80% at 100% 0%, rgba(200, 16, 46, 0.35) 0%, transparent 55%),
-        radial-gradient(ellipse 50% 60% at 0% 100%, rgba(255, 255, 255, 0.04) 0%, transparent 50%),
-        linear-gradient(135deg, #0A0A0A 0%, #141414 45%, #1a1214 100%);
+        radial-gradient(ellipse 70% 80% at 100% 0%, rgba(239, 108, 47, 0.4) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 60% at 0% 100%, rgba(248, 56, 56, 0.18) 0%, transparent 50%),
+        linear-gradient(135deg, #0A0A0A 0%, #141414 50%, #1A120E 100%);
     color: #fff;
     padding: 0 0 52px;
     position: relative;
@@ -41,7 +41,7 @@
     background: rgba(255, 255, 255, 0.08);
 }
 .page-hero-nav #responsive-nav .main-nav > li.active > a {
-    background: rgba(200, 16, 46, 0.25);
+    background: rgba(239, 108, 47, 0.25);
     color: #fff;
 }
 .page-hero::before {
@@ -51,7 +51,7 @@
     right: -8%;
     width: 420px;
     height: 420px;
-    background: rgba(200, 16, 46, 0.12);
+    background: rgba(239, 108, 47, 0.12);
     border-radius: 50%;
     pointer-events: none;
 }
@@ -74,7 +74,7 @@
     letter-spacing: -0.3px;
     line-height: 1.2;
 }
-.page-hero h1 span { color: #C8102E; }
+.page-hero h1 span { color: #FB923C; }
 .page-hero p {
     font-size: 16px;
     line-height: 1.55;
@@ -86,9 +86,9 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(200, 16, 46, 0.18);
-    border: 1px solid rgba(200, 16, 46, 0.45);
-    color: #ff8a98;
+    background: rgba(239, 108, 47, 0.18);
+    border: 1px solid rgba(239, 108, 47, 0.45);
+    color: #FDBA74;
     padding: 6px 14px;
     border-radius: 6px;
     font-size: 12px;
@@ -98,7 +98,7 @@
     margin-bottom: 18px;
 }
 .page-hero-badge i {
-    color: #C8102E;
+    color: #FB923C;
 }
 
 @media only screen and (max-width: 767px) {
@@ -136,7 +136,7 @@
     width: 70px;
     height: 70px;
     margin: 0 auto 20px;
-    background: #F4F4F4;
+    background: #FAFAF9;
     border-radius: 50%;
     display: flex;
     align-items: center;

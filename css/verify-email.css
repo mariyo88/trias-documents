@@ -1,6 +1,6 @@
 .verify-section {
 	padding: 80px 0 100px;
-	background: #F4F4F4;
+	background: #FAFAF9;
 	min-height: calc(100vh - 200px);
 	display: flex;
 	align-items: center;
@@ -19,8 +19,8 @@
 	margin-bottom: 20px;
 	display: block;
 }
-.verify-icon.loading { color: #C8102E; }
-.verify-icon.success { color: #C8102E; }
+.verify-icon.loading { color: #EF6C2F; }
+.verify-icon.success { color: #198754; }
 .verify-icon.error   { color: #dc3545; }
 .verify-card h2 {
 	font-size: 22px;
@@ -37,7 +37,7 @@
 .verify-btn {
 	display: inline-block;
 	padding: 12px 32px;
-	background: #0A0A0A;
+	background: #EF6C2F;
 	color: #fff;
 	border-radius: 4px;
 	font-size: 14px;
@@ -45,20 +45,20 @@
 	text-decoration: none;
 	transition: background .2s;
 }
-.verify-btn:hover { background: #0A0A0A; color: #fff; }
+.verify-btn:hover { background: #D4551A; color: #fff; }
 .verify-btn.secondary {
 	background: transparent;
-	color: #C8102E;
-	border: 1px solid #C8102E;
+	color: #EF6C2F;
+	border: 1px solid #EF6C2F;
 	margin-left: 10px;
 }
-.verify-btn.secondary:hover { background: #C8102E; color: #fff; }
+.verify-btn.secondary:hover { background: #EF6C2F; color: #fff; }
 .spinner {
 	display: inline-block;
 	width: 48px;
 	height: 48px;
 	border: 4px solid #e0e6f7;
-	border-top-color: #C8102E;
+	border-top-color: #EF6C2F;
 	border-radius: 50%;
 	animation: spin .8s linear infinite;
 	margin-bottom: 20px;

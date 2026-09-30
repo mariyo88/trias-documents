@@ -1,6 +1,6 @@
 /* ── Under Construction Page ── */
 .wip-hero {
-	background: linear-gradient(135deg, #0A0A0A 0%, #1a1b2e 60%, #C8102E 100%);
+	background: linear-gradient(135deg, #0A0A0A 0%, #1A120E 55%, #EF6C2F 100%);
 	color: #fff;
 	min-height: 480px;
 	display: flex;
@@ -16,7 +16,7 @@
 	right: -8%;
 	width: 480px;
 	height: 480px;
-	background: rgba(66,116,217,0.08);
+	background: rgba(239, 108, 47,0.08);
 	border-radius: 50%;
 	pointer-events: none;
 }
@@ -39,8 +39,8 @@
 .wip-icon-wrap {
 	width: 110px;
 	height: 110px;
-	background: rgba(66,116,217,0.15);
-	border: 2px solid rgba(66,116,217,0.4);
+	background: rgba(239, 108, 47,0.15);
+	border: 2px solid rgba(239, 108, 47,0.4);
 	border-radius: 50%;
 	display: flex;
 	align-items: center;
@@ -50,18 +50,18 @@
 }
 .wip-icon-wrap i {
 	font-size: 46px;
-	color: #95CCDD;
+	color: #FDBA74;
 }
 @keyframes wip-pulse {
-	0%, 100% { transform: scale(1);   box-shadow: 0 0 0 0   rgba(66,116,217,0.3); }
-	50%       { transform: scale(1.04); box-shadow: 0 0 0 14px rgba(66,116,217,0);   }
+	0%, 100% { transform: scale(1);   box-shadow: 0 0 0 0   rgba(239, 108, 47,0.3); }
+	50%       { transform: scale(1.04); box-shadow: 0 0 0 14px rgba(239, 108, 47,0);   }
 }
 
 .wip-badge {
 	display: inline-block;
-	background: rgba(66,116,217,0.2);
-	border: 1px solid rgba(66,116,217,0.5);
-	color: #95CCDD;
+	background: rgba(239, 108, 47,0.2);
+	border: 1px solid rgba(239, 108, 47,0.5);
+	color: #FDBA74;
 	padding: 6px 18px;
 	border-radius: 20px;
 	font-size: 12px;
@@ -78,7 +78,7 @@
 	margin-bottom: 16px;
 }
 .wip-hero h1 span {
-	color: #C8102E;
+	color: #FB923C;
 }
 .wip-hero p.wip-lead {
 	font-size: 17px;
@@ -110,7 +110,7 @@
 }
 .wip-progress-bar {
 	height: 100%;
-	background: linear-gradient(90deg, #C8102E, #95CCDD);
+	background: linear-gradient(90deg, #EF6C2F, #FDBA74);
 	border-radius: 3px;
 	width: 0;
 	transition: width 1.2s ease;
@@ -121,7 +121,7 @@
 }
 .btn-wip-primary {
 	display: inline-block;
-	background: #C8102E;
+	background: #EF6C2F;
 	color: #fff;
 	padding: 13px 32px;
 	border-radius: 3px;
@@ -132,7 +132,7 @@
 	transition: background 0.25s ease, transform 0.2s ease;
 }
 .btn-wip-primary:hover {
-	background: #0A0A0A;
+	background: #D4551A;
 	color: #fff;
 	text-decoration: none;
 	transform: translateY(-2px);
@@ -152,7 +152,7 @@
 }
 .btn-wip-outline:hover {
 	background: #fff;
-	color: #C8102E;
+	color: #EF6C2F;
 	border-color: #fff;
 	text-decoration: none;
 }
@@ -160,7 +160,7 @@
 /* Info cards below the hero */
 .wip-info-section {
 	padding: 55px 0 40px;
-	background: #F4F4F4;
+	background: #FAFAF9;
 }
 .wip-card {
 	background: #fff;
@@ -175,12 +175,12 @@
 .wip-card:hover {
 	box-shadow: 0 8px 28px rgba(0,0,0,0.12);
 	transform: translateY(-5px);
-	border-top-color: #C8102E;
+	border-top-color: #EF6C2F;
 }
 .wip-card-icon {
 	width: 66px;
 	height: 66px;
-	background: rgba(66,116,217,0.08);
+	background: rgba(239, 108, 47,0.08);
 	border-radius: 50%;
 	display: flex;
 	align-items: center;
@@ -189,11 +189,11 @@
 	transition: background 0.3s ease;
 }
 .wip-card:hover .wip-card-icon {
-	background: #C8102E;
+	background: #EF6C2F;
 }
 .wip-card-icon i {
 	font-size: 26px;
-	color: #C8102E;
+	color: #EF6C2F;
 	transition: color 0.3s ease;
 }
 .wip-card:hover .wip-card-icon i {
@@ -207,7 +207,7 @@
 }
 .wip-card p {
 	font-size: 14px;
-	color: #777;
+	color: #78716C;
 	margin: 0;
 	line-height: 1.7;
 }
@@ -232,7 +232,7 @@
 }
 .wip-contact-link {
 	display: inline-block;
-	color: #95CCDD;
+	color: #FDBA74;
 	font-size: 15px;
 	font-weight: 600;
 	text-decoration: none;
